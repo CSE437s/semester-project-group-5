@@ -57,7 +57,7 @@ button:focus-visible {
 
 @media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
+    color: #9bd0ff;
     background-color: #ffffff;
   }
   a:hover {
@@ -67,7 +67,6 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
-
 
 .flexbox-signin {
   display: flex;

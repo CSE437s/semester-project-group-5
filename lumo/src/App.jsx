@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
+import Questionnaire from "./components/Question";
 
 const supabase = createClient(
   "https://dzmmfskrxgkcjakmhutk.supabase.co",
@@ -36,6 +37,11 @@ export default function App() {
       </div>
     );
   } else {
-    return <div>Logged in!</div>;
+    // Render questions once session is established
+    return (
+      <div className="flexbox-signin">
+        <Questionnaire />
+      </div>
+    );
   }
 }
