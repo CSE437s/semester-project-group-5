@@ -1,20 +1,23 @@
 import React from 'react';
-// If using recharts for example
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 function SavingsSummary({ data }) {
-  // Assuming 'data' is an array of objects with 'year', 'balance', and other relevant data
+  // You'll need to map your data to the format expected by Recharts
+  const chartData = data.map(item => ({
+    year: item.year,
+    balance: item.endBalance
+  }));
 
   return (
-    <div>
-      <h2>Your savings balance at the end of the period will be {data[data.length - 1].balance}</h2>
-      <BarChart width={600} height={300} data={data}>
+    <div className="chart-container">
+      <h2>Your savings balance at the end of the period will be ${data[data.length - 1].endBalance.toFixed(2)}</h2>
+      <BarChart width={600} height={300} data={chartData}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="year" />
         <YAxis />
         <Tooltip />
         <Legend />
-        <Bar dataKey="balance" fill="#8884d8" />
+        <Bar dataKey="balance" fill="#82ca9d" />
       </BarChart>
     </div>
   );

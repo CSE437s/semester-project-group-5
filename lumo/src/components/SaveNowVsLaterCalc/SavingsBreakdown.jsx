@@ -1,10 +1,11 @@
 import React from 'react';
+import './SaveNowVsLaterCalc.css'; // Assuming the CSS file is in the same directory
 
 function SavingsBreakdown({ data }) {
   return (
     <div>
       <h3>Breakdown by Year</h3>
-      <table>
+      <table className="table">
         <thead>
           <tr>
             <th>Year</th>

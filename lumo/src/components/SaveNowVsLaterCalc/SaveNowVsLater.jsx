@@ -3,26 +3,34 @@ import SavingsForm from './SavingsForm';
 import SavingsBreakdown from './SavingsBreakdown';
 import SavingsComparison from './SavingsComparison';
 import SavingsSummary from './SavingsSummary';
-import { mockSavingsData } from '../../__mocks__/MockData'; // Adjust the path as necessary
+import { mockSavingsData } from '../../__mocks__/MockData'; // Make sure the path is correct
+import './SaveNowVsLaterCalc.css'; // The CSS file with your styles
 
 function SaveNowVsLater() {
-    const [savingsData, setSavingsData] = useState(mockSavingsData); // Example state, adjust according to your actual data structure and source
+    const [savingsData, setSavingsData] = useState(mockSavingsData);
 
-    // Function to update savings data based on form input
-    // This is a placeholder function, you'll need to replace it with actual logic
+    // Replace this with your actual calculation logic
     const handleCalculate = (formData) => {
-        console.log(formData); // Process the form data to update the savingsData state
-        // setSavingsData(updatedData);
+        // Assume calculateSavings is a function that returns the updated data
+        const updatedData = calculateSavings(formData);
+        setSavingsData(updatedData);
     };
 
     return (
-        <div>
+        <div className="save-now-vs-later-container">
             <SavingsForm onCalculate={handleCalculate} />
             <SavingsSummary data={savingsData} />
             <SavingsBreakdown data={savingsData} />
-            <SavingsComparison currentApy={1.2} /> {/* Example APY, replace with actual data */}
+            <SavingsComparison currentApy={1.2} />
         </div>
     );
 }
 
 export default SaveNowVsLater;
+
+// Add a calculateSavings function that handles the calculation logic
+// This is a placeholder - you will need to implement this based on your own logic
+function calculateSavings(formData) {
+    // Perform calculation here
+    return mockSavingsData; // return the calculated data
+}
