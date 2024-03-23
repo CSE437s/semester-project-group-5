@@ -18,9 +18,10 @@ export default function Questionnaire() {
       console.log("here");
       const { data: questions, error } = await supabase
         .from("Questions")
-        .select("question, options");
+        .select("questionText, options");
 
       console.log("questions:", questions);
+      console.log("options:", questions[0].options);
 
       if (error) {
         console.error("Error fetching question and options:", error.message);
@@ -28,7 +29,7 @@ export default function Questionnaire() {
       }
 
       if (questions && questions.length > 0) {
-        setQuestion(questions[0].question);
+        setQuestion(questions[0].questionText);
         setOptions(questions[0].options);
       }
     }
@@ -47,24 +48,24 @@ export default function Questionnaire() {
       <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}>
         {options.map((option) => (
           <button
-            key={option.id}
+            key={option.focusScore}
             style={{
               padding: "10px 20px",
               fontSize: "16px",
               borderRadius: "5px",
-              backgroundColor: selectedOption === option.id ? "#4CAF50" : "#f0f0f0",
-              color: selectedOption === option.id ? "white" : "black",
+              backgroundColor: selectedOption === option.focusScore ? "#4CAF50" : "#f0f0f0",
+              color: selectedOption === option.focusScore ? "white" : "black",
               border: "none",
               cursor: "pointer",
             }}
-            onClick={() => handleOptionClick(option.id)}
+            onClick={() => handleOptionClick(option.focusScore)}
           >
-            {option}
+            {option.optionText}
           </button>
         ))}
       </div>
       {selectedOption && (
-        <p>You selected: {options.find((option) => option.id === selectedOption).text}</p>
+        <button>Continue</button>
       )}
     </div>
   );
