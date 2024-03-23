@@ -8,9 +8,10 @@ const supabase = createClient(
 );
 
 export default function Questionnaire() {
-  const [question, setQuestion] = useState("");
-  const [options, setOptions] = useState([]);
+  const [questions, setQuestions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [currentIndex, setcurrentIndex] = useState(0);
+
 
   // Fetch question and options from Supabase
   useEffect(() => {
@@ -29,8 +30,16 @@ export default function Questionnaire() {
       }
 
       if (questions && questions.length > 0) {
-        setQuestion(questions[0].questionText);
-        setOptions(questions[0].options);
+        let tempQs = [];
+        let tempOpts = [];
+        questions.forEach(el => {
+          tempQs.push(el.questionText)
+          tempOpts.push(el.options)
+        });
+        console.log('tempQs:', tempQs)
+        console.log('tempOpts:', tempOpts)
+        console.log('q:', questions[0])
+        setQuestions(questions);
       }
     }
 
@@ -41,32 +50,51 @@ export default function Questionnaire() {
     setSelectedOption(optionId);
   };
 
+   const handleContinueClick = () => {
+    setcurrentIndex(currentIndex+1);
+    setSelectedOption(null);
+  };
+
+
+
   return (
     <div style={{ maxWidth: "800px", margin: "auto", textAlign: "center" }}>
       <h1>Quiz</h1>
-      <p>{question}</p>
-      <div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}>
-        {options.map((option) => (
-          <button
-            key={option.focusScore}
-            style={{
-              padding: "10px 20px",
-              fontSize: "16px",
-              borderRadius: "5px",
-              backgroundColor: selectedOption === option.focusScore ? "#4CAF50" : "#f0f0f0",
-              color: selectedOption === option.focusScore ? "white" : "black",
-              border: "none",
-              cursor: "pointer",
-            }}
-            onClick={() => handleOptionClick(option.focusScore)}
-          >
-            {option.optionText}
-          </button>
-        ))}
-      </div>
+      <p>Current Question: {currentIndex + 1}</p>
+      <h3>Progress bar</h3>
+      <progress value={(currentIndex / questions.length) * 100} max="100"></progress>
+       {questions && questions.length > 0 ? (
+      <><p>{questions[currentIndex].questionText}</p><div style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}>
+          {questions[currentIndex].options.map((option) => (
+            <button
+              key={option.focusScore}
+              style={{
+                padding: "10px 20px",
+                fontSize: "16px",
+                borderRadius: "5px",
+                backgroundColor: selectedOption === option.focusScore ? "#4CAF50" : "#f0f0f0",
+                color: selectedOption === option.focusScore ? "white" : "black",
+                border: "none",
+                cursor: "pointer",
+              }}
+              onClick={() => handleOptionClick(option.focusScore)}
+            >
+              {option.optionText}
+            </button>
+          )
+          
+          )}
+        </div>
       {selectedOption && (
-        <button>Continue</button>
+        <button 
+        onClick={handleContinueClick}
+        >
+          Continue
+          </button>
+          
       )}
+      </> ) : (<p>Loading...</p>) }
+      
     </div>
   );
 }
