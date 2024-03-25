@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
+import "./index.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import Questionnaire from "./components/Question";
-import SaveNowVsLater from './components/SaveNowVsLaterCalc/SaveNowVsLater'; // Importing the wrapper component
-
+import Questionnaire from "./components/Question"; // Adjusted to match your version
+import SaveNowVsLater from "./components/SaveNowVsLaterCalc/SaveNowVsLater"; // Importing the wrapper component
 
 const supabase = createClient(
   "https://dzmmfskrxgkcjakmhutk.supabase.co",
@@ -26,9 +26,7 @@ export default function App() {
       setSession(session);
     });
 
-    return () => {
-      subscription.unsubscribe();
-    };
+    return () => subscription.unsubscribe();
   }, []);
 
   return (
