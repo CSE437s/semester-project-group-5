@@ -8,7 +8,7 @@ export default function Questionnaire() {
           personalities that are influenced by a combination of internal and external factors. These
           personalities can be broadly categorized into eight distinct types based on their
           emotional orientation, strategic approach, and the extent to which they are influenced by
-          internal and external factors. Let's explore your financial personality!
+          internal and external factors. Lets explore your financial personality!
         </p>
 
         <h2>Overall Phenotype Report and Score:</h2>
