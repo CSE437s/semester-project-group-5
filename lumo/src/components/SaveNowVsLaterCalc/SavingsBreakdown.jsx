@@ -1,5 +1,4 @@
-import React from 'react';
-import './SaveNowVsLaterCalc.css'; // Assuming the CSS file is in the same directory
+import React from "react";
 
 function SavingsBreakdown({ data }) {
   return (

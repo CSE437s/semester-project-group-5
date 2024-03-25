@@ -1,11 +1,10 @@
-import React from 'react';
-import './SaveNowVsLaterCalc.css'; // Assuming the CSS file is in the same directory
+import React from "react";
 
 function SavingsComparison({ userApy }) {
   // These widths are just placeholders, you might calculate them based on the APY values
-  const nationalAverageApyWidth = '10%';
-  const onlineAverageApyWidth = '60%';
-  const todaysTopApyWidth = '100%';
+  const nationalAverageApyWidth = "10%";
+  const onlineAverageApyWidth = "60%";
+  const todaysTopApyWidth = "100%";
 
   return (
     <div className="apy-comparison">
