@@ -29,7 +29,7 @@ export default function App() {
 
   if (!session) {
     return (
-      <div className="flexbox-signin">
+      <div>
         <div>
           <h1>Welcome to Article26!</h1>
           <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={[]} />

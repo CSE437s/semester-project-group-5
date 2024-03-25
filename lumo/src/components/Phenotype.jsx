@@ -1,4 +1,4 @@
-export default function Questionnaire() {
+export default function Phenotype() {
   return (
     <div>
       <div>
@@ -15,18 +15,7 @@ export default function Questionnaire() {
         <p>Your financial phenotype is [INSERT PHENOTYPE]</p>
 
         <h2>Big 6 Factors:</h2>
-      </div>
-      <hr />
-      <div>
-        <h2>Section 2</h2>
-        <p>Textual information for Section 2 goes here.</p>
-      </div>
-      <hr />
-      <div>
-        <h2>Section 3</h2>
-        <p>Textual information for Section 3 goes here.</p>
-      </div>
-      {/* Add more sections as needed */}
+     </div>
     </div>
   );
 }

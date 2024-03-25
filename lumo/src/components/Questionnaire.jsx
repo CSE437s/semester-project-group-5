@@ -1,3 +1,4 @@
+import Navbar from "./navbar";
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
@@ -59,7 +60,9 @@ export default function Questionnaire() {
   };
 
   return (
+    
     <div style={{ maxWidth: "800px", margin: "auto", textAlign: "center" }}>
+      <Navbar></Navbar>
       <h1>Quiz</h1>
       <p>Current Question: {currentIndex + 1}</p>
       <h3>Progress bar</h3>
