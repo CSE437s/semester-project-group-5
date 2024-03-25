@@ -1,9 +1,12 @@
+// eslint-disable-next-line no-unused-vars
+import React, { useState, useEffect } from "react";
 import "./index.css";
-import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
-import Questionnaire from "./components/Questionnaire";
+import Questionnaire from "./components/Questionnaire"; // Choose the correct import based on your app's structure
+import SaveNowVsLater from "./components/SaveNowVsLaterCalc/SaveNowVsLater"; // Keep this component if needed
 
 const supabase = createClient(
   "https://dzmmfskrxgkcjakmhutk.supabase.co",
@@ -27,21 +30,37 @@ export default function App() {
     return () => subscription.unsubscribe();
   }, []);
 
-  if (!session) {
-    return (
-      <div>
-        <div>
-          <h1>Welcome to Article26!</h1>
-          <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={[]} />
-        </div>
+  return (
+    <Router>
+      <div className="app-container">
+        <nav>
+          {/* Conditionally render links based on session state */}
+          {session && (
+            <>
+              <Link to="/">Home</Link>
+              <Link to="/savenowvslater">Save Now vs Later</Link>
+            </>
+          )}
+        </nav>
+
+        <Routes>
+          <Route
+            path="/"
+            element={
+              !session ? (
+                <div className="flexbox-signin">
+                  <h1>Welcome to Article26!</h1>
+                  <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={[]} />
+                </div>
+              ) : (
+                <Questionnaire />
+              )
+            }
+          />
+          <Route path="/savenowvslater" element={<SaveNowVsLater />} />
+          {/* You can add more routes as needed */}
+        </Routes>
       </div>
-    );
-  } else {
-    // Render questions once session is established
-    return (
-      <div className="flexbox-signin">
-        <Questionnaire />
-      </div>
-    );
-  }
+    </Router>
+  );
 }
