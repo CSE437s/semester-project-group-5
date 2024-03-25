@@ -1,3 +1,4 @@
+import Navbar from "./navbar";
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 
@@ -7,21 +8,29 @@ const supabase = createClient(
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6bW1mc2tyeGdrY2pha21odXRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg4OTQ5NTksImV4cCI6MjAyNDQ3MDk1OX0.rcnmUdhmLpXxlhgkPAUq1jA743biNbMLZtOtR361AS0"
 );
 
+  const initialScores = [
+    { "name": "Risk", "responseScore": 0 , "totalScore": 0},
+    { "name": "Feeling", "responseScore": 0 , "totalScore": 0},
+    { "name": "Planning", "responseScore": 0 , "totalScore": 0},
+    { "name": "Spending", "responseScore": 0 , "totalScore": 0},
+    { "name": "Influence", "responseScore": 0 , "totalScore": 0},
+    { "name": "Knowledge", "responseScore": 0, "totalScore": 0 }
+  ];
+
 export default function Questionnaire() {
   const [questions, setQuestions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [factorScore, setfactorScore] = useState(initialScores);
   const [currentIndex, setcurrentIndex] = useState(0);
 
   // Fetch question and options from Supabase
   useEffect(() => {
     async function fetchQuestionAndOptions() {
-      console.log("here");
       const { data: questions, error } = await supabase
         .from("Questions")
-        .select("questionText, options");
+        .select("questionText, options, primaryFactor");
 
       console.log("questions:", questions);
-      console.log("options:", questions[0].options);
 
       if (error) {
         console.error("Error fetching question and options:", error.message);
@@ -29,15 +38,6 @@ export default function Questionnaire() {
       }
 
       if (questions && questions.length > 0) {
-        let tempQs = [];
-        let tempOpts = [];
-        questions.forEach((el) => {
-          tempQs.push(el.questionText);
-          tempOpts.push(el.options);
-        });
-        console.log("tempQs:", tempQs);
-        console.log("tempOpts:", tempOpts);
-        console.log("q:", questions[0]);
         setQuestions(questions);
       }
     }
@@ -50,12 +50,19 @@ export default function Questionnaire() {
   };
 
   const handleContinueClick = () => {
+     const updatedScore = factorScore.map(item =>
+      item.name ===  questions[currentIndex].primaryFactor ? { ...item, responseScore: item.responseScore + selectedOption, totalScore: item.totalScore + 4} : item
+    );
+    console.log(updatedScore)
+    setfactorScore(updatedScore);
     setcurrentIndex(currentIndex + 1);
     setSelectedOption(null);
   };
 
   return (
+    
     <div style={{ maxWidth: "800px", margin: "auto", textAlign: "center" }}>
+      <Navbar></Navbar>
       <h1>Quiz</h1>
       <p>Current Question: {currentIndex + 1}</p>
       <h3>Progress bar</h3>
