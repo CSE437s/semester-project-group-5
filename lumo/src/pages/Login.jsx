@@ -1,10 +1,7 @@
 import React from "react";
 import { Navigate } from "react-router";
 
-import { Box, Button, Container, Typography } from "@mui/material";
-import Form from "../components/Form";
-import EmailInput from "../components/EmailInput";
-import PasswordInput from "../components/PasswordInput";
+import { Box, Container } from "@mui/material";
 import Logo from "../components/Logo";
 import Link from "../components/Link";
 
@@ -22,7 +19,7 @@ export default function Login() {
 
   return (
     <Box className="fullscreen-no-toolbar" display="flex" alignItems="center" padding={1}>
-      <Container maxWidth="xs">
+      <Container>
         <Box display="flex" flexDirection="column" alignItems="center">
           <Logo />
           <Auth

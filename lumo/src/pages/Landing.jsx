@@ -18,7 +18,9 @@ export default function Landing() {
       <Container maxWidth="sm">
         <Box display="flex" flexDirection="column" alignItems="center">
           <Logo scale={0.4} />
-          <Typography variant="h1">Welcome to Article26!</Typography>
+          <Typography variant="h1" textAlign="center">
+            Welcome to Article26!
+          </Typography>
           <Button
             type="submit"
             variant="contained"
