@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
+import { useNavigate } from "react-router-dom"
 
 const initialScores = [
   { name: "Risk", responseScore: 0, totalScore: 0 },
@@ -15,6 +16,8 @@ export default function Quiz() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [factorScore, setfactorScore] = useState(initialScores);
   const [currentIndex, setcurrentIndex] = useState(0);
+  const navigate = useNavigate();
+
 
   // Fetch question and options from Supabase
   useEffect(() => {
@@ -77,6 +80,7 @@ export default function Quiz() {
       const uid = data.session.user.id;
       const responseData = { userID: uid, factorScores: factorScore };
       createResponseEntry(responseData);
+      navigate('/home/phenotype');
       //TODO: Navigate somewhere
     } else {
       setcurrentIndex(currentIndex + 1);
@@ -102,18 +106,18 @@ export default function Quiz() {
                   padding: "10px 20px",
                   fontSize: "16px",
                   borderRadius: "5px",
-                  backgroundColor: selectedOption === index + 1 ? "#4CAF50" : "#f0f0f0",
-                  color: selectedOption === index + 1 ? "white" : "black",
+                  backgroundColor: selectedOption === index ? "#4CAF50" : "#f0f0f0",
+                  color: selectedOption === index ? "white" : "black",
                   border: "none",
                   cursor: "pointer",
                 }}
-                onClick={() => handleOptionClick(index + 1)}
+                onClick={() => handleOptionClick(index)}
               >
                 {option.optionText}
               </button>
             ))}
           </div>
-          {selectedOption && <button onClick={handleContinueClick}>Continue</button>}
+          {selectedOption + 1 && <button onClick={handleContinueClick}>Continue</button>}
         </>
       ) : (
         <p>Loading...</p>
