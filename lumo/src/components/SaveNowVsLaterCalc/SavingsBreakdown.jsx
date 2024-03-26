@@ -15,13 +15,13 @@ function SavingsBreakdown({ data }) {
           </tr>
         </thead>
         <tbody>
-          {data.map((yearData, index) => (
+          {data.map((item, index) => (
             <tr key={index}>
-              <td>{yearData.year}</td>
-              <td>${yearData.startingBalance.toFixed(2)}</td>
-              <td>${yearData.contributions.toFixed(2)}</td>
-              <td>${yearData.interestEarned.toFixed(2)}</td>
-              <td>${yearData.endBalance.toFixed(2)}</td>
+              <td>{item.year}</td>
+              <td>${item.startingBalance.toFixed(2)}</td>
+              <td>${item.contributions.toFixed(2)}</td>
+              <td>${item.interestEarned.toFixed(2)}</td>
+              <td>${item.endBalance.toFixed(2)}</td>
             </tr>
           ))}
         </tbody>
