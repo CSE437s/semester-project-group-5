@@ -52,6 +52,7 @@ export function LayoutNav() {
               <NavLink to="/home/about">About</NavLink>
               <NavLink to="/home/quiz">Phenotype Test</NavLink>
               <NavLink to="/home/phenotype">Results</NavLink>
+              <NavLink to="/home/nowvslater">Savings Calculator</NavLink>
             </Stack>
 
             <IconButton

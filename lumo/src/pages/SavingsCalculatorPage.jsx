@@ -27,7 +27,11 @@ function SavingsCalculatorPage() {
   return (
     <div>
       <Typography component="h1" variant="h4" textAlign="center" fontWeight="bold">
-        Savings over Time Calculator
+        Savings Over Time Calculator
+        <br />
+        <br />
+        <br />
+        <br />
       </Typography>
       <SavingsInputForm onSubmit={handleFormSubmit} />
       {/* Only render SavingsGraph if calculatedData and calculatedData.graphData exist */}
