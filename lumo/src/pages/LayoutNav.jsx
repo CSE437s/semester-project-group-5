@@ -36,7 +36,7 @@ import Logo from "../components/Logo";
 import { useSession } from "../services/api";
 import { supabase } from "../supabase";
 
-export default function LayoutNav() {
+export function LayoutNav() {
   const session = useSession();
   const [menuAnchor, setMenuAnchor] = useState(null);
 
@@ -59,9 +59,7 @@ export default function LayoutNav() {
                 md: "flex",
               }}
             >
-              <NavLink to="/products">Products</NavLink>
               <NavLink to="/about">About</NavLink>
-              <NavLink to="/contact">Contact Us</NavLink>
             </Stack>
 
             <IconButton
@@ -79,20 +77,6 @@ export default function LayoutNav() {
                 label="About"
                 Icon={<StoreOutlinedIcon />}
                 SelectedIcon={<StoreIcon />}
-                onClick={onCloseMenu}
-              />
-              <MenuLinkItem
-                to="/about"
-                label="About"
-                Icon={<InfoOutlinedIcon />}
-                SelectedIcon={<InfoIcon />}
-                onClick={onCloseMenu}
-              />
-              <MenuLinkItem
-                to="/contact"
-                label="Contact Us"
-                Icon={<SupportAgentOutlinedIcon />}
-                SelectedIcon={<SupportAgentIcon />}
                 onClick={onCloseMenu}
               />
             </Menu>

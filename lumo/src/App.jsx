@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import About from "./pages/About";
-import LayoutNav from "./pages/LayoutNav";
+import { LayoutNav } from "./pages/LayoutNav";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Phenotype from "./pages/Phenotype";
@@ -16,13 +16,14 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LayoutNav />} />
-        <Route path="/landing" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/phenotype" element={<Phenotype />} />
-        <Route path="/quiz" element={<Quiz />} />
-        <Route path="/nowvslater" element={<SaveNowVsLater />} />
+        <Route path="/" element={<LayoutNav />}>
+          <Route path="/landing" element={<Landing />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/phenotype" element={<Phenotype />} />
+          <Route path="/quiz" element={<Quiz />} />
+          <Route path="/nowvslater" element={<SaveNowVsLater />} />
+        </Route>
         {/* You can add more routes as needed */}
       </Routes>
     </Router>
