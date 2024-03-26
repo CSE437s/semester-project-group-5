@@ -48,7 +48,47 @@ export default function Quiz() {
     setSelectedOption(optionId);
   };
 
-  const handleContinueClick = () => {
+  async function createResponseEntry(responseData) {
+  try {
+    console.log('here')
+    const { data, error } = await supabase.from("Responses").insert(responseData);
+    console.log('rdat:', responseData);
+    
+    if (error) {
+      console.error('Error creating entry 1:', error.message);
+      return null;
+    }
+    console.log('Entry created successfully:', data);
+    return data;
+  } catch (err) {
+    console.error('Error creating entry 2:', err.message);
+    return null;
+  }
+}
+
+// async function getUserIdFromAuth() {
+//   const { data, error } = await supabase.auth.getSession()
+//   if (error) {
+//     console.error('Error getting user:', error.message);
+//     return null;
+//   }
+//   const user = data.session.user
+
+//   if (user) {
+//     // User is authenticated
+//     const userId = user.id;
+//     console.log('User ID:', userId);
+//     return userId;
+//   } else {
+//     // User is not authenticated
+//     console.error('User not authenticated');
+//     return null;
+//   }
+// }
+
+// Usage example
+
+  const handleContinueClick = async () => {
     const updatedScore = factorScore.map((item) =>
       item.name === questions[currentIndex].primaryFactor
         ? {
@@ -60,8 +100,21 @@ export default function Quiz() {
     );
     console.log(updatedScore);
     setfactorScore(updatedScore);
-    setcurrentIndex(currentIndex + 1);
-    setSelectedOption(null);
+    if (currentIndex + 1>= questions.length){
+      const { data, error } = await supabase.auth.getSession()
+      if (error) {
+        console.error('Error getting user:', error.message);
+        return null;
+      }
+      const uid = data.session.user.id;
+      const responseData = {"userID":  uid, "factorScores": factorScore};
+      createResponseEntry(responseData);
+      //TODOVIz: Navigate somewhere
+    }
+    else {
+      setcurrentIndex(currentIndex + 1);
+      setSelectedOption(null);
+    }
   };
 
   return (
@@ -69,7 +122,7 @@ export default function Quiz() {
       <h1>Quiz</h1>
       <p>Current Question: {currentIndex + 1}</p>
       <h3>Progress bar</h3>
-      <progress value={(currentIndex / questions.length) * 100} max="100"></progress>
+      <progress value={(currentIndex / questions.length ?? 1) * 100} max="100"></progress>
       {questions && questions.length > 0 ? (
         <>
           <p>{questions[currentIndex].questionText}</p>
