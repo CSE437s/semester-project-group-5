@@ -73,6 +73,13 @@ export function LayoutNav() {
             <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem to="/home/phenotype" label="Your Results" onClick={onCloseMenu} />
             </Menu>
+            <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
+              <MenuLinkItem
+                to="/home/nowvslater"
+                label="Savings Calculator"
+                onClick={onCloseMenu}
+              />
+            </Menu>
           </Box>
 
           {/** Center the logo horizontally in the toolbar */}
