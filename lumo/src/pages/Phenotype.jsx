@@ -31,7 +31,7 @@ export default function Phenotype() {
           <br />
         </Typography>
 
-        <Button variant="contained" component={Link} to="/quiz" color="primary">
+        <Button variant="contained" component={Link} to="/home/quiz" color="primary">
           Take the Financial Phenotype Test
         </Button>
       </div>

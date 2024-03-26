@@ -43,11 +43,9 @@ export default function About() {
           advice catered specifically to their financial tendencies.
           <br />
           <br />
-          <br />
-          <br />
         </Typography>
 
-        <Button variant="contained" component={Link} to="/quiz" color="primary">
+        <Button variant="contained" component={Link} to="/home/quiz" color="primary">
           Take the Financial Phenotype Test
         </Button>
       </div>

@@ -16,13 +16,13 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LayoutNav />}>
-          <Route path="/landing" element={<Landing />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/phenotype" element={<Phenotype />} />
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/nowvslater" element={<SaveNowVsLater />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Landing />} />
+        <Route path="/home" element={<LayoutNav />}>
+          <Route path="/home/about" element={<About />} />
+          <Route path="/home/phenotype" element={<Phenotype />} />
+          <Route path="/home/quiz" element={<Quiz />} />
+          <Route path="/home/nowvslater" element={<SaveNowVsLater />} />
         </Route>
         {/* You can add more routes as needed */}
       </Routes>

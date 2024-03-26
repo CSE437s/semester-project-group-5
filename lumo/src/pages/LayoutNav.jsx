@@ -1,20 +1,7 @@
-import {
-  Info as InfoIcon,
-  InfoOutlined as InfoOutlinedIcon,
-  Login as LoginIcon,
-  Logout as LogoutIcon,
-  Menu as MenuIcon,
-  ShoppingCart as ShoppingCartIcon,
-  ShoppingCartOutlined as ShoppingCartOutlinedIcon,
-  Store as StoreIcon,
-  StoreOutlined as StoreOutlinedIcon,
-  SupportAgent as SupportAgentIcon,
-  SupportAgentOutlined as SupportAgentOutlinedIcon,
-} from "@mui/icons-material";
+import { Login as LoginIcon, Logout as LogoutIcon, Menu as MenuIcon } from "@mui/icons-material";
 
 import {
   AppBar,
-  Badge,
   Box,
   Button,
   IconButton,
@@ -25,7 +12,6 @@ import {
   Stack,
   Toolbar,
   Tooltip,
-  Typography,
 } from "@mui/material";
 
 import { useMutation } from "@tanstack/react-query";
@@ -39,6 +25,9 @@ import { supabase } from "../supabase";
 export function LayoutNav() {
   const session = useSession();
   const [menuAnchor, setMenuAnchor] = useState(null);
+  const location = useLocation();
+  // Check if there are child routes under the current location
+  const hasChildRoutes = location.pathname !== "/";
 
   const onOpenMenu = (event) => {
     setMenuAnchor(event.currentTarget);
@@ -60,9 +49,9 @@ export function LayoutNav() {
               }}
             >
               {/* UPDATE NAVBAR HERE */}
-              <NavLink to="/about">About</NavLink>
-              <NavLink to="/quiz">Phenotype Test</NavLink>
-              <NavLink to="/phenotype">Your Financial Phenotype</NavLink>
+              <NavLink to="/home/about">About</NavLink>
+              <NavLink to="/home/quiz">Phenotype Test</NavLink>
+              <NavLink to="/home/phenotype">Your Financial Phenotype</NavLink>
             </Stack>
 
             <IconButton
@@ -76,19 +65,13 @@ export function LayoutNav() {
 
             {/* ALSO UPDATE NAVBAR HERE */}
             <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
-              <MenuLinkItem
-                to="/about"
-                label="About"
-                Icon={<StoreOutlinedIcon />}
-                SelectedIcon={<StoreIcon />}
-                onClick={onCloseMenu}
-              />
+              <MenuLinkItem to="/home/about" label="About" onClick={onCloseMenu} />
             </Menu>
           </Box>
 
           {/** Center the logo horizontally in the toolbar */}
           <Link
-            to="/about"
+            to="/home/about"
             style={{
               position: "absolute",
               left: "50%",
@@ -106,9 +89,6 @@ export function LayoutNav() {
           {session === null && <LoginButton />}
         </Toolbar>
       </AppBar>
-
-      <Toolbar />
-
       <main>
         <Outlet />
       </main>
@@ -142,8 +122,8 @@ function LogoutButton() {
     const { error } = await supabase.auth.signOut();
     if (error) {
       console.error(error);
-      enqueueSnackbar(error.message, { variant: "error" });
     }
+    console.log;
   });
 
   return (
