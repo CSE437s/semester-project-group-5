@@ -1,26 +1,39 @@
-import { Stack, Typography } from "@mui/material";
+/* About.jsx
+Basic about page
+*/
+import { Stack, Typography, Button } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function Phenotype() {
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <Typography variant="h2">Your Financial Phenotype Report</Typography>
-        <Typography>
-          In the world of personal finance, individuals exhibit a wide range of financial
-          personalities that are influenced by a combination of internal and external factors. These
-          personalities can be broadly categorized into eight distinct types based on their
-          emotional orientation, strategic approach, and the extent to which they are influenced by
-          internal and external factors. Let's explore your financial personality!
+    <Stack
+      className="fullscreen"
+      direction={{
+        xs: "column",
+        md: "row-reverse",
+      }}
+      alignItems="center"
+      justifyContent="center"
+      padding={3}
+      spacing={4}
+    >
+      <div>
+        <Typography component="h1" variant="h4" textAlign="center" fontWeight="bold">
+          Your Financial Phenotype
         </Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h2">Overall Phenotype Report and Score:</Typography>
-        <Typography>Your financial phenotype is [INSERT PHENOTYPE]</Typography>
-      </Grid>
-      <Grid item xs={12}>
-        <Typography variant="h2">Big 6 Factors:</Typography>
-        {/* Add content for Big 6 Factors */}
-      </Grid>
-    </Grid>
+
+        <Typography maxWidth="sm" variant="body1" marginTop={2}>
+          blah blah blah blah
+          <br />
+          button should render if they haven't taken the test. if not logged in, they should be
+          directed to the auth page
+          <br />
+        </Typography>
+
+        <Button variant="contained" component={Link} to="/quiz" color="primary">
+          Take the Financial Phenotype Test
+        </Button>
+      </div>
+    </Stack>
   );
 }

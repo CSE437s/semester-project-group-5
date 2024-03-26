@@ -23,25 +23,26 @@ export default function About() {
         </Typography>
 
         <Typography maxWidth="sm" variant="body1" marginTop={2}>
-          Article 26 in The United Nations Declaration of Human Rights states that everyone has the
-          right to education. As a team of minorities, we have experienced the effects of financial
-          literacy not being held to this same standard.
+          <strong>Article 26</strong> in The UN Declaration of Human Rights states that everyone has
+          the right to education. As a team of minorities, we have experienced the effects of
+          financial literacy not being held to this same standard.
           <br />
           <br />
-          Article 26 aims to uplift other minorities and their extended families by creating the
-          first personal finance platform leveraging the connection between mental and financial
-          health to provide equitable and accessible financial literacy. Not only increasing users'
-          knowledge but also instilling better behaviors and habits, leading to better financial
-          capability.
+          The <strong>Financial Phenotype Test</strong>, similar to the Myers Briggs personality
+          test, is a tool we've developed to help individuals understand their unique financial
+          personality. By understanding one's <strong>financial phenotype</strong>, individuals can
+          gain insights into their financial tendencies, strengths, and areas for improvement,
+          enabling them to make more informed financial decisions and build healthier financial
+          habits.
           <br />
           <br />
-          The <strong>Financial Phenotype Test</strong>, akin to the Myers Briggs personality test,
-          is a tool we've developed to help individuals understand their unique financial
-          personality. This phenotype, once obtained, informs the personalized financial education
-          resources that Article 26 will provide. By understanding one's financial phenotype,
-          individuals can gain insights into their financial tendencies, strengths, and areas for
-          improvement, enabling them to make more informed financial decisions and build healthier
-          financial habits.
+          Leveraging <strong>artificial intelligence (AI)</strong>, we intend to provide
+          personalized financial guidance tailored to each user's distinct financial phenotype.
+          Through a chatbot trained on the principles of behavioral economics and financial
+          psychology, as well as one's personal financial tendencies, users will receive AI-powered
+          advice catered specifically to their financial tendencies.
+          <br />
+          <br />
           <br />
           <br />
         </Typography>

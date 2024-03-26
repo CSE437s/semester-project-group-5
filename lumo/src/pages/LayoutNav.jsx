@@ -59,7 +59,10 @@ export function LayoutNav() {
                 md: "flex",
               }}
             >
+              {/* UPDATE NAVBAR HERE */}
               <NavLink to="/about">About</NavLink>
+              <NavLink to="/quiz">Phenotype Test</NavLink>
+              <NavLink to="/phenotype">Your Financial Phenotype</NavLink>
             </Stack>
 
             <IconButton
@@ -71,6 +74,7 @@ export function LayoutNav() {
               <MenuIcon />
             </IconButton>
 
+            {/* ALSO UPDATE NAVBAR HERE */}
             <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem
                 to="/about"
@@ -84,7 +88,7 @@ export function LayoutNav() {
 
           {/** Center the logo horizontally in the toolbar */}
           <Link
-            to="/"
+            to="/about"
             style={{
               position: "absolute",
               left: "50%",
