@@ -62,7 +62,7 @@ export default function Quiz() {
       item.name === questions[currentIndex].primaryFactor
         ? {
             ...item,
-            responseScore: item.responseScore + selectedOption,
+            responseScore: item.responseScore + questions[currentIndex].options[selectedOption].focusScore,
             totalScore: item.totalScore + 4,
           }
         : item
@@ -95,19 +95,19 @@ export default function Quiz() {
           <div
             style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}
           >
-            {questions[currentIndex].options.map((option) => (
+            {questions[currentIndex].options.map((option, index) => (
               <button
-                key={option.focusScore}
+                key={index}
                 style={{
                   padding: "10px 20px",
                   fontSize: "16px",
                   borderRadius: "5px",
-                  backgroundColor: selectedOption === option.focusScore ? "#4CAF50" : "#f0f0f0",
-                  color: selectedOption === option.focusScore ? "white" : "black",
+                  backgroundColor: selectedOption === index + 1 ? "#4CAF50" : "#f0f0f0",
+                  color: selectedOption === index + 1 ? "white" : "black",
                   border: "none",
                   cursor: "pointer",
                 }}
-                onClick={() => handleOptionClick(option.focusScore)}
+                onClick={() => handleOptionClick(index + 1)}
               >
                 {option.optionText}
               </button>
