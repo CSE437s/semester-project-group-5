@@ -29,8 +29,6 @@ export default function Quiz() {
         .from("Questions")
         .select("questionText, options, primaryFactor");
 
-      console.log("questions:", questions);
-
       if (error) {
         console.error("Error fetching question and options:", error.message);
         return;
@@ -50,9 +48,7 @@ export default function Quiz() {
 
   async function createResponseEntry(responseData) {
   try {
-    console.log('here')
     const { data, error } = await supabase.from("Responses").insert(responseData);
-    console.log('rdat:', responseData);
     
     if (error) {
       console.error('Error creating entry 1:', error.message);
@@ -66,26 +62,6 @@ export default function Quiz() {
   }
 }
 
-// async function getUserIdFromAuth() {
-//   const { data, error } = await supabase.auth.getSession()
-//   if (error) {
-//     console.error('Error getting user:', error.message);
-//     return null;
-//   }
-//   const user = data.session.user
-
-//   if (user) {
-//     // User is authenticated
-//     const userId = user.id;
-//     console.log('User ID:', userId);
-//     return userId;
-//   } else {
-//     // User is not authenticated
-//     console.error('User not authenticated');
-//     return null;
-//   }
-// }
-
 // Usage example
 
   const handleContinueClick = async () => {
@@ -98,7 +74,6 @@ export default function Quiz() {
           }
         : item
     );
-    console.log(updatedScore);
     setfactorScore(updatedScore);
     if (currentIndex + 1>= questions.length){
       const { data, error } = await supabase.auth.getSession()
