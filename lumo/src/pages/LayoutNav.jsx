@@ -124,17 +124,18 @@ function LoginButton() {
 }
 
 function LogoutButton() {
-  const { mutate: logout, isLoading } = useMutation(async () => {
-    const { error } = await supabase.auth.signOut();
+
+  async function logout() {
+
+     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error(error);
+      console.error('error mf', error);
     }
-    console.log;
-  });
+  }
 
   return (
     <Tooltip title="Logout">
-      <IconButton onClick={() => logout()} disabled={isLoading}>
+      <IconButton onClick={logout}>
         <LogoutIcon />
       </IconButton>
     </Tooltip>
