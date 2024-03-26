@@ -1,8 +1,9 @@
 // SavingsCalculatorPage.jsx
-import React, { useState } from 'react';
-import SavingsInputForm from '../components/SaveNowVsLaterCalc/SavingsInputForm';
-import SavingsGraph from '../components/SaveNowVsLaterCalc/SavingsGraph';
-import { calculateSavings } from '../services/savingsCalculator';
+import React, { useState } from "react";
+import SavingsInputForm from "../components/SaveNowVsLaterCalc/SavingsInputForm";
+import SavingsGraph from "../components/SaveNowVsLaterCalc/SavingsGraph";
+import { calculateSavings } from "../services/savingsCalculator";
+import { Typography } from "@mui/material";
 // ... other imports if necessary
 
 function SavingsCalculatorPage() {
@@ -25,6 +26,9 @@ function SavingsCalculatorPage() {
 
   return (
     <div>
+      <Typography component="h1" variant="h4" textAlign="center" fontWeight="bold">
+        Savings over Time Calculator
+      </Typography>
       <SavingsInputForm onSubmit={handleFormSubmit} />
       {/* Only render SavingsGraph if calculatedData and calculatedData.graphData exist */}
       {calculatedData && calculatedData.graphData && (

@@ -1,12 +1,13 @@
 // SavingsInputForm.jsx
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-function SavingsInputForm({ onSubmit }) { // Prop name corrected to match the passed prop from the parent
+function SavingsInputForm({ onSubmit }) {
+  // Prop name corrected to match the passed prop from the parent
   const [formData, setFormData] = useState({
-    startingBalance: 25000,
-    annualYield: 1.10,
-    monthlyContribution: 100,
-    yearsToSave: 5
+    startingBalance: null,
+    annualYield: null,
+    monthlyContribution: null,
+    yearsToSave: null,
   });
 
   const handleChange = (e) => {
