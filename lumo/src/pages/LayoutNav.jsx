@@ -51,7 +51,7 @@ export function LayoutNav() {
               {/* UPDATE NAVBAR HERE */}
               <NavLink to="/home/about">About</NavLink>
               <NavLink to="/home/quiz">Phenotype Test</NavLink>
-              <NavLink to="/home/phenotype">Your Results</NavLink>
+              <NavLink to="/home/phenotype">Results</NavLink>
             </Stack>
 
             <IconButton
@@ -124,12 +124,10 @@ function LoginButton() {
 }
 
 function LogoutButton() {
-
   async function logout() {
-
-     const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error('error mf', error);
+      console.error("error mf", error);
     }
   }
 

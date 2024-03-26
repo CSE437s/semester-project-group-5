@@ -3,7 +3,6 @@ import { Navigate } from "react-router";
 
 import { Box, Container } from "@mui/material";
 import Logo from "../components/Logo";
-import Link from "../components/Link";
 
 import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
@@ -14,7 +13,7 @@ export default function Login() {
   const session = useSession();
   // Navigate back to the home page on login.
   if (session) {
-    return <Navigate to="/About" replace />;
+    return <Navigate to="/home/about" replace />;
   }
 
   return (
@@ -22,11 +21,7 @@ export default function Login() {
       <Container>
         <Box display="flex" flexDirection="column" alignItems="center">
           <Logo />
-          <Auth
-            supabaseClient={supabase}
-            appearance={{ theme: ThemeSupa }}
-            providers={["google"]}
-          />
+          <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} providers={[]} />
         </Box>
       </Container>
     </Box>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
+import { useNavigate } from "react-router-dom"
 
 const initialScores = [
   { name: "Risk", responseScore: 0, totalScore: 0 },
@@ -15,6 +16,8 @@ export default function Quiz() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [factorScore, setfactorScore] = useState(initialScores);
   const [currentIndex, setcurrentIndex] = useState(0);
+  const navigate = useNavigate();
+
 
   // Fetch question and options from Supabase
   useEffect(() => {
@@ -62,7 +65,7 @@ export default function Quiz() {
       item.name === questions[currentIndex].primaryFactor
         ? {
             ...item,
-            responseScore: item.responseScore + selectedOption,
+            responseScore: item.responseScore + questions[currentIndex].options[selectedOption].focusScore,
             totalScore: item.totalScore + 4,
           }
         : item
@@ -77,6 +80,7 @@ export default function Quiz() {
       const uid = data.session.user.id;
       const responseData = { userID: uid, factorScores: factorScore };
       createResponseEntry(responseData);
+      navigate('/home/phenotype');
       //TODO: Navigate somewhere
     } else {
       setcurrentIndex(currentIndex + 1);
@@ -95,25 +99,25 @@ export default function Quiz() {
           <div
             style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}
           >
-            {questions[currentIndex].options.map((option) => (
+            {questions[currentIndex].options.map((option, index) => (
               <button
-                key={option.focusScore}
+                key={index}
                 style={{
                   padding: "10px 20px",
                   fontSize: "16px",
                   borderRadius: "5px",
-                  backgroundColor: selectedOption === option.focusScore ? "#4CAF50" : "#f0f0f0",
-                  color: selectedOption === option.focusScore ? "white" : "black",
+                  backgroundColor: selectedOption === index ? "#4CAF50" : "#f0f0f0",
+                  color: selectedOption === index ? "white" : "black",
                   border: "none",
                   cursor: "pointer",
                 }}
-                onClick={() => handleOptionClick(option.focusScore)}
+                onClick={() => handleOptionClick(index)}
               >
                 {option.optionText}
               </button>
             ))}
           </div>
-          {selectedOption && <button onClick={handleContinueClick}>Continue</button>}
+          {selectedOption + 1 && <button onClick={handleContinueClick}>Continue</button>}
         </>
       ) : (
         <p>Loading...</p>

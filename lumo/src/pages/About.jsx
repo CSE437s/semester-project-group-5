@@ -38,9 +38,6 @@ export default function About() {
           <br />
           Leveraging <strong>artificial intelligence (AI)</strong>, we intend to provide
           personalized financial guidance tailored to each user's distinct financial phenotype.
-          Through a chatbot trained on the principles of behavioral economics and financial
-          psychology, as well as one's personal financial tendencies, users will receive AI-powered
-          advice catered specifically to their financial tendencies.
           <br />
           <br />
         </Typography>
