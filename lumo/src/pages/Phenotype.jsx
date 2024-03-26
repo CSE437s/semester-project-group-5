@@ -23,10 +23,11 @@ export default function Phenotype() {
         </Typography>
 
         <Typography maxWidth="sm" variant="body1" marginTop={2}>
-          blah blah blah blah
+          - your phenotype is blah blah blah
           <br />
-          button should render if they haven't taken the test. if not logged in, they should be
-          directed to the auth page
+          - button should render if they haven't taken the test.
+          <br />
+          - if not logged in, they should be directed to the auth page
           <br />
         </Typography>
 
