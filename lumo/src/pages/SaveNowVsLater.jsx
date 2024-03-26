@@ -5,7 +5,7 @@ import SavingsComparison from "../components/SaveNowVsLaterCalc/SavingsCompariso
 import SavingsSummary from "../components/SaveNowVsLaterCalc/SavingsSummary";
 import { mockSavingsData } from "../__mocks__/MockData"; // Make sure the path is correct
 
-function SaveNowVsLater() {
+export default function SaveNowVsLater() {
   const [savingsData, setSavingsData] = useState(mockSavingsData);
 
   // Replace this with your actual calculation logic
@@ -24,8 +24,6 @@ function SaveNowVsLater() {
     </div>
   );
 }
-
-export default SaveNowVsLater;
 
 // Add a calculateSavings function that handles the calculation logic
 // This is a placeholder - you will need to implement this based on your own logic

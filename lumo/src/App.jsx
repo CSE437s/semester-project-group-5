@@ -20,7 +20,7 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/phenotype" element={<Phenotype />} />
         <Route path="/quiz" element={<Quiz />} />
-        <Route path="/savenowvslater" element={<SaveNowVsLater />} />
+        <Route path="/nowvslater" element={<SaveNowVsLater />} />
         {/* You can add more routes as needed */}
       </Routes>
     </Router>
