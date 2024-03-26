@@ -1,10 +1,12 @@
-import { Stack, Typography, Button } from "@mui/material";
+import { Stack, Typography, Button, getGrid2UtilityClass } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
 
 export default function Phenotype() {
+  const [resultsAvailable, setResultsAvailable] = useState(false);
   const [responses, setResponses] = useState({});
+  const [graphData, setGraphData] = useState({});
 
   useEffect(() => {
     async function fetchResponses() {
@@ -24,15 +26,26 @@ export default function Phenotype() {
         return;
       }
 
-      console.log("responses: ", responses);
-
       if (responses && responses.length > 0) {
         setResponses(responses);
+        setResultsAvailable(true);
+        getGraphData(responses[0].factorScores);
       }
     }
-
     fetchResponses();
   }, []);
+
+  function getGraphData(factorScores) {
+    // Extract data
+    let factorNames = [];
+    let factorRatios = [];
+    for (var i = 0; i < factorScores.length; i++) {
+      factorNames.push(factorScores[i].name);
+      factorRatios.push(100 * (factorScores[i].responseScore / factorScores[i].totalScore));
+    }
+    console.log(factorNames);
+    console.log(factorRatios);
+  }
 
   return (
     <Stack
@@ -46,37 +59,27 @@ export default function Phenotype() {
       padding={3}
       spacing={4}
     >
-      <div>
-        <Typography component="h1" variant="h4" textAlign="center" fontWeight="bold">
-          Your Financial Phenotype
-        </Typography>
-
-        <Typography maxWidth="sm" variant="body1" marginTop={2}>
-          - your phenotype is blah blah blah
-          <br />
-          - button should render if they havent taken the test.
-          <br />
-          - if not logged in, they should be directed to the auth page
-          <br />
-        </Typography>
-
+      {resultsAvailable ? (
+        <Stack>
+          <Typography component="h1" variant="h4" textAlign="center" fontWeight="bold">
+            Your Financial Phenotype!
+          </Typography>
+          <Typography maxWidth="sm" variant="body1" marginTop={2}>
+            Here are your results
+          </Typography>
+          {responses[0].factorScores.map((factor) => (
+            <div key={factor.name}>
+              <p>
+                {factor.name} : {factor.responseScore} / {factor.totalScore}{" "}
+              </p>
+            </div>
+          ))}
+        </Stack>
+      ) : (
         <Button variant="contained" component={Link} to="/home/quiz" color="primary">
-          Take the Financial Phenotype Test
+          Take the Phenotype Test
         </Button>
-        {responses && responses.length > 0 ? (
-          <div>
-            {responses[0].factorScores.map((factor) => (
-              <div key={factor.name}>
-                <p>
-                  {factor.name} : {factor.responseScore} / {factor.totalScore}{" "}
-                </p>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p>Loading...</p>
-        )}
-      </div>
+      )}
     </Stack>
   );
 }
