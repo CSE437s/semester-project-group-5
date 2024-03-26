@@ -51,7 +51,7 @@ export function LayoutNav() {
               {/* UPDATE NAVBAR HERE */}
               <NavLink to="/home/about">About</NavLink>
               <NavLink to="/home/quiz">Phenotype Test</NavLink>
-              <NavLink to="/home/phenotype">Your Financial Phenotype</NavLink>
+              <NavLink to="/home/phenotype">Your Results</NavLink>
             </Stack>
 
             <IconButton
@@ -66,6 +66,12 @@ export function LayoutNav() {
             {/* ALSO UPDATE NAVBAR HERE */}
             <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem to="/home/about" label="About" onClick={onCloseMenu} />
+            </Menu>
+            <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
+              <MenuLinkItem to="/home/quiz" label="Phenotype Test" onClick={onCloseMenu} />
+            </Menu>
+            <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
+              <MenuLinkItem to="/home/phenotype" label="Your Results" onClick={onCloseMenu} />
             </Menu>
           </Box>
 

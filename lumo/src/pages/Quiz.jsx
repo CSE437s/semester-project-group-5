@@ -1,11 +1,5 @@
 import { useState, useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
-
-// MOVE SOMEWHERE ELSE
-const supabase = createClient(
-  "https://dzmmfskrxgkcjakmhutk.supabase.co",
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6bW1mc2tyeGdrY2pha21odXRrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDg4OTQ5NTksImV4cCI6MjAyNDQ3MDk1OX0.rcnmUdhmLpXxlhgkPAUq1jA743biNbMLZtOtR361AS0"
-);
+import { supabase } from "../supabase";
 
 const initialScores = [
   { name: "Risk", responseScore: 0, totalScore: 0 },
@@ -38,7 +32,6 @@ export default function Quiz() {
         setQuestions(questions);
       }
     }
-
     fetchQuestionAndOptions();
   }, []);
 
@@ -47,22 +40,22 @@ export default function Quiz() {
   };
 
   async function createResponseEntry(responseData) {
-  try {
-    const { data, error } = await supabase.from("Responses").insert(responseData);
-    
-    if (error) {
-      console.error('Error creating entry 1:', error.message);
+    try {
+      const { data, error } = await supabase.from("Responses").insert(responseData);
+
+      if (error) {
+        console.error("Error creating entry 1:", error.message);
+        return null;
+      }
+      console.log("Entry created successfully:", data);
+      return data;
+    } catch (err) {
+      console.error("Error creating entry 2:", err.message);
       return null;
     }
-    console.log('Entry created successfully:', data);
-    return data;
-  } catch (err) {
-    console.error('Error creating entry 2:', err.message);
-    return null;
   }
-}
 
-// Usage example
+  // Usage example
 
   const handleContinueClick = async () => {
     const updatedScore = factorScore.map((item) =>
@@ -75,18 +68,17 @@ export default function Quiz() {
         : item
     );
     setfactorScore(updatedScore);
-    if (currentIndex + 1>= questions.length){
-      const { data, error } = await supabase.auth.getSession()
+    if (currentIndex + 1 >= questions.length) {
+      const { data, error } = await supabase.auth.getSession();
       if (error) {
-        console.error('Error getting user:', error.message);
+        console.error("Error getting user:", error.message);
         return null;
       }
       const uid = data.session.user.id;
-      const responseData = {"userID":  uid, "factorScores": factorScore};
+      const responseData = { userID: uid, factorScores: factorScore };
       createResponseEntry(responseData);
-      //TODOVIz: Navigate somewhere
-    }
-    else {
+      //TODO: Navigate somewhere
+    } else {
       setcurrentIndex(currentIndex + 1);
       setSelectedOption(null);
     }
@@ -95,8 +87,7 @@ export default function Quiz() {
   return (
     <div style={{ maxWidth: "800px", margin: "auto", textAlign: "center" }}>
       <h1>Quiz</h1>
-      <p>Current Question: {currentIndex + 1}</p>
-      <h3>Progress bar</h3>
+      <h3>Progress</h3>
       <progress value={(currentIndex / questions.length ?? 1) * 100} max="100"></progress>
       {questions && questions.length > 0 ? (
         <>
