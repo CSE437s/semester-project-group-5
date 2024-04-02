@@ -11,7 +11,7 @@ const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleChat = () => setIsOpen(!isOpen);
   const location = useLocation();
-  const isLoginPage = location.pathname === "/login";
+  const isLoginPage = location.pathname === "/login" || location.pathname === "/home/quiz";
 
   const initialMessages = [
     {
