@@ -18,15 +18,13 @@ export default function Quiz() {
   const [selectedOption, setSelectedOption] = useState(null);
   const [factorScore, setfactorScore] = useState(initialScores);
   const [currentIndex, setcurrentIndex] = useState(0);
-  const navigate = useNavigate();
+  const navigate = useNavigate(); // VERIFY SESSION
 
-  // VERIFY SESSION
   const session = useSession();
   if (!session) {
     return <Navigate to="/login" replace />; // Redirect to login if no user is logged in
-  }
+  } // ON COMPONENT MOUNT
 
-  // ON COMPONENT MOUNT
   useEffect(() => {
     // Fetch question and options from Supabase
     async function fetchQuestionAndOptions() {
@@ -44,9 +42,8 @@ export default function Quiz() {
       }
     }
     fetchQuestionAndOptions();
-  }, []);
+  }, []); // FUNCTIONS
 
-  // FUNCTIONS
   const handleOptionClick = (optionId) => {
     setSelectedOption(optionId);
   };
@@ -65,9 +62,8 @@ export default function Quiz() {
       console.error("Error creating entry 2:", err.message);
       return null;
     }
-  }
+  } // Usage example
 
-  // Usage example
   const handleContinueClick = async () => {
     const updatedScore = factorScore.map((item) =>
       item.name === questions[currentIndex].primaryFactor
@@ -89,8 +85,7 @@ export default function Quiz() {
       const uid = data.session.user.id;
       const responseData = { userID: uid, factorScores: factorScore };
       createResponseEntry(responseData);
-      navigate("/home/phenotype");
-      //TODO: Navigate somewhere
+      navigate("/home/phenotype"); //TODO: Navigate somewhere
     } else {
       setcurrentIndex(currentIndex + 1);
       setSelectedOption(null);
@@ -99,15 +94,18 @@ export default function Quiz() {
 
   return (
     <div style={{ maxWidth: "800px", margin: "auto", textAlign: "center" }}>
-      <h1>Quiz</h1>
-      <h3>Progress</h3>
-      <progress value={(currentIndex / questions.length ?? 1) * 100} max="100"></progress>
+            <h1>Quiz</h1>
+            <h3>Progress</h3>
+            <progress value={(currentIndex / questions.length ?? 1) * 100} max="100"></progress>
+            
       {questions && questions.length > 0 ? (
         <>
-          <p>{questions[currentIndex].questionText}</p>
+                    <p>{questions[currentIndex].questionText}</p>
+                    
           <div
             style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}
           >
+                        
             {questions[currentIndex].options.map((option, index) => (
               <button
                 key={index}
@@ -122,15 +120,19 @@ export default function Quiz() {
                 }}
                 onClick={() => handleOptionClick(index)}
               >
-                {JSON.stringify(option.optionText)}
+                                {JSON.stringify(option.optionText)}
+
               </button>
             ))}
+                      
           </div>
-          {selectedOption + 1 && <button onClick={handleContinueClick}>Continue</button>}
+                    {selectedOption + 1 && <button onClick={handleContinueClick}>Continue</button>}
+                  
         </>
       ) : (
         <p>Loading...</p>
       )}
+          
     </div>
   );
 }
