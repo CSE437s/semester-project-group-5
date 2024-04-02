@@ -1,136 +1,93 @@
-import { useState, useEffect } from "react";
-import { supabase } from "../supabase";
-import { useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
-import { useSession } from "../components/SessionProvider";
+import React, { useState } from "react";
+import { Fab, Box, Typography, TextField, IconButton, Button } from "@mui/material";
+import ChatIcon from "@mui/icons-material/Chat";
+import CloseIcon from "@mui/icons-material/Close";
+import MinimizeIcon from "@mui/icons-material/Minimize";
 
-const initialScores = [
-  { name: "Risk", responseScore: 0, totalScore: 0 },
-  { name: "Feeling", responseScore: 0, totalScore: 0 },
-  { name: "Planning", responseScore: 0, totalScore: 0 },
-  { name: "Spending", responseScore: 0, totalScore: 0 },
-  { name: "Influence", responseScore: 0, totalScore: 0 },
-  { name: "Knowledge", responseScore: 0, totalScore: 0 },
-];
+const Chatbot = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [message, setMessage] = useState("");
 
-export default function Quiz() {
-  const [questions, setQuestions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [factorScore, setfactorScore] = useState(initialScores);
-  const [currentIndex, setcurrentIndex] = useState(0);
-  const navigate = useNavigate();
-
-  // VERIFY SESSION
-  const session = useSession();
-  if (!session) {
-    return <Navigate to="/login" replace />; // Redirect to login if no user is logged in
-  }
-
-  // ON COMPONENT MOUNT
-  useEffect(() => {
-    // Fetch question and options from Supabase
-    async function fetchQuestionAndOptions() {
-      const { data: questions, error } = await supabase
-        .from("Questions")
-        .select("questionText, options, primaryFactor");
-
-      if (error) {
-        console.error("Error fetching question and options:", error.message);
-        return;
-      }
-
-      if (questions && questions.length > 0) {
-        setQuestions(questions);
-      }
-    }
-    fetchQuestionAndOptions();
-  }, []);
-
-  // FUNCTIONS
-  const handleOptionClick = (optionId) => {
-    setSelectedOption(optionId);
-  };
-
-  async function createResponseEntry(responseData) {
-    try {
-      const { data, error } = await supabase.from("Responses").insert(responseData);
-
-      if (error) {
-        console.error("Error creating entry 1:", error.message);
-        return null;
-      }
-      console.log("Entry created successfully:", data);
-      return data;
-    } catch (err) {
-      console.error("Error creating entry 2:", err.message);
-      return null;
-    }
-  }
-
-  // Usage example
-  const handleContinueClick = async () => {
-    const updatedScore = factorScore.map((item) =>
-      item.name === questions[currentIndex].primaryFactor
-        ? {
-            ...item,
-            responseScore:
-              item.responseScore + questions[currentIndex].options[selectedOption].focusScore,
-            totalScore: item.totalScore + 4,
-          }
-        : item
-    );
-    setfactorScore(updatedScore);
-    if (currentIndex + 1 >= questions.length) {
-      const { data, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error("Error getting user:", error.message);
-        return null;
-      }
-      const uid = data.session.user.id;
-      const responseData = { userID: uid, factorScores: factorScore };
-      createResponseEntry(responseData);
-      navigate("/home/phenotype");
-      //TODO: Navigate somewhere
-    } else {
-      setcurrentIndex(currentIndex + 1);
-      setSelectedOption(null);
-    }
+  const toggleChat = () => setIsOpen(!isOpen);
+  const handleMessageChange = (event) => setMessage(event.target.value);
+  const handleSendMessage = () => {
+    console.log(message); // Implement sending message
+    setMessage(""); // Clear the input field after sending
   };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "auto", textAlign: "center" }}>
-      <h1>Quiz</h1>
-      <h3>Progress</h3>
-      <progress value={(currentIndex / questions.length ?? 1) * 100} max="100"></progress>
-      {questions && questions.length > 0 ? (
-        <>
-          <p>{questions[currentIndex].questionText}</p>
-          <div
-            style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}
+    <Box
+      sx={{
+        position: "fixed",
+        bottom: 16,
+        right: 16,
+        zIndex: 1000,
+      }}
+    >
+      {isOpen ? (
+        <Box
+          sx={{
+            width: 300,
+            height: 400,
+            backgroundColor: "white",
+            borderRadius: "16px",
+            boxShadow: "0px 4px 12px rgba(0,0,0,0.15)",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Box
+            sx={{
+              padding: "10px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              borderBottom: "1px solid #ccc",
+            }}
           >
-            {questions[currentIndex].options.map((option, index) => (
-              <button
-                key={index}
-                style={{
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  borderRadius: "5px",
-                  backgroundColor: selectedOption === index ? "#4CAF50" : "#f0f0f0",
-                  color: selectedOption === index ? "white" : "black",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-                onClick={() => handleOptionClick(index)}
-              >
-                {option.optionText}
-              </button>
-            ))}
-          </div>
-          {selectedOption + 1 && <button onClick={handleContinueClick}>Continue</button>}
-        </>
+            <Typography variant="h6">Chat with us!</Typography>
+            <Box>
+              <IconButton onClick={toggleChat} sx={{ mr: 1 }}>
+                <MinimizeIcon />
+              </IconButton>
+              <CloseIcon onClick={toggleChat} style={{ cursor: "pointer" }} />
+            </Box>
+          </Box>
+          <Box sx={{ flex: 1, padding: "10px" }}>{/* Placeholder for chat messages */}</Box>
+          <Box
+            sx={{
+              borderTop: "1px solid #ccc",
+              padding: "10px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <TextField
+              fullWidth
+              size="small"
+              variant="outlined"
+              placeholder="Type a message..."
+              value={message}
+              onChange={handleMessageChange}
+              onKeyPress={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  handleSendMessage();
+                  event.preventDefault();
+                }
+              }}
+            />
+            <Button onClick={handleSendMessage} sx={{ ml: 1 }}>
+              Send
+            </Button>
+          </Box>
+        </Box>
       ) : (
-        <p>Loading...</p>
+        <Fab color="primary" onClick={toggleChat} sx={{ borderRadius: "50%" }}>
+          <ChatIcon />
+        </Fab>
       )}
-    </div>
+    </Box>
   );
-}
+};
+
+export default Chatbot;
