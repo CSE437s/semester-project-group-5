@@ -1,6 +1,6 @@
 # Semester-Project
 
-## Team Name: DCoss
+## Team Name: Article 26
 ## Group #: 5
 ## Contributors: David, Vishal, Bashar
 ## TA: Victor
