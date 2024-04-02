@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useSession } from "../components/SessionProvider";
 import { supabase } from "../supabase";
+import { Navigate } from "react-router-dom";
 import ipf from "../assets/ipf_character.png";
 
 export default function Phenotype() {
@@ -14,7 +15,7 @@ export default function Phenotype() {
   // VERYFY SESSION
   const session = useSession();
   if (!session) {
-    navigate("/login"); // Redirect to login if no user is logged in
+    return <Navigate to="/login" replace />; // Redirect to login if no user is logged in
   }
 
   // ON COMPONENT MOUNT

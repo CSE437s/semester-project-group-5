@@ -67,14 +67,8 @@ export function LayoutNav() {
             {/* ALSO UPDATE NAVBAR HERE */}
             <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem to="/home/about" label="About" onClick={onCloseMenu} />
-            </Menu>
-            <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem to="/home/quiz" label="Phenotype Test" onClick={onCloseMenu} />
-            </Menu>
-            <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem to="/home/phenotype" label="Your Results" onClick={onCloseMenu} />
-            </Menu>
-            <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem to="/home/nowvslater" label="Calculators" onClick={onCloseMenu} />
             </Menu>
           </Box>
