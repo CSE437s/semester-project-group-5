@@ -52,7 +52,7 @@ export function LayoutNav() {
               <NavLink to="/home/about">About</NavLink>
               <NavLink to="/home/quiz">Phenotype Test</NavLink>
               <NavLink to="/home/phenotype">Results</NavLink>
-              <NavLink to="/home/nowvslater">Savings Calculator</NavLink>
+              <NavLink to="/home/nowvslater">Calculators</NavLink>
             </Stack>
 
             <IconButton
@@ -75,11 +75,7 @@ export function LayoutNav() {
               <MenuLinkItem to="/home/phenotype" label="Your Results" onClick={onCloseMenu} />
             </Menu>
             <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
-              <MenuLinkItem
-                to="/home/nowvslater"
-                label="Savings Calculator"
-                onClick={onCloseMenu}
-              />
+              <MenuLinkItem to="/home/nowvslater" label="Calculators" onClick={onCloseMenu} />
             </Menu>
           </Box>
 
