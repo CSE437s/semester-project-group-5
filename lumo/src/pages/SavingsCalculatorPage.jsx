@@ -27,7 +27,7 @@ function SavingsCalculatorPage() {
   return (
     <div>
       <Typography component="h1" variant="h4" textAlign="center" fontWeight="bold">
-        Savings Over Time Calculator
+        Your Savings Over Time
         <br />
         <br />
       </Typography>
