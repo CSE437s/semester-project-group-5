@@ -165,3 +165,5 @@ function MenuLinkItem(props) {
     </MenuItem>
   );
 }
+
+export default LayoutNav;
