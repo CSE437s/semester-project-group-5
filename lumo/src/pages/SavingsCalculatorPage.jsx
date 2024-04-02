@@ -30,8 +30,6 @@ function SavingsCalculatorPage() {
         Savings Over Time Calculator
         <br />
         <br />
-        <br />
-        <br />
       </Typography>
       <SavingsInputForm onSubmit={handleFormSubmit} />
       {/* Only render SavingsGraph if calculatedData and calculatedData.graphData exist */}

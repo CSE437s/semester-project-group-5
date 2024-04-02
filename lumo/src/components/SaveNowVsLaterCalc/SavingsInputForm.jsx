@@ -1,13 +1,14 @@
 // SavingsInputForm.jsx
 import React, { useState } from "react";
+import { Box, FormControl, TextField, Button } from "@mui/material";
 
 function SavingsInputForm({ onSubmit }) {
   // Prop name corrected to match the passed prop from the parent
   const [formData, setFormData] = useState({
-    startingBalance: null,
-    annualYield: null,
-    monthlyContribution: null,
-    yearsToSave: null,
+    startingBalance: "",
+    annualYield: "",
+    monthlyContribution: "",
+    yearsToSave: "",
   });
 
   const handleChange = (e) => {
@@ -21,37 +22,56 @@ function SavingsInputForm({ onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="number"
-        name="startingBalance"
-        placeholder="Starting Balance"
-        value={formData.startingBalance}
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="annualYield"
-        placeholder="Annual Yield (APY)"
-        value={formData.annualYield}
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="monthlyContribution"
-        placeholder="Monthly Contribution"
-        value={formData.monthlyContribution}
-        onChange={handleChange}
-      />
-      <input
-        type="number"
-        name="yearsToSave"
-        placeholder="Years to Save"
-        value={formData.yearsToSave}
-        onChange={handleChange}
-      />
-      <button type="submit">Calculate</button>
-    </form>
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      noValidate
+      autoComplete="off"
+      sx={{
+        "& .MuiTextField-root": { m: 1, width: "25ch" },
+        display: "flex", // Enable flexbox
+        justifyContent: "center", // Center content horizontally
+        alignItems: "center", // Center content vertically (optional)
+      }}
+    >
+      <FormControl>
+        <TextField
+          label="Starting Balance"
+          type="number"
+          name="startingBalance"
+          value={formData.startingBalance}
+          onChange={handleChange}
+          variant="outlined"
+        />
+        <TextField
+          label="Annual Yield % (APY)"
+          type="number"
+          name="annualYield"
+          value={formData.annualYield}
+          onChange={handleChange}
+          variant="outlined"
+        />
+        <TextField
+          label="Monthly Contribution"
+          type="number"
+          name="monthlyContribution"
+          value={formData.monthlyContribution}
+          onChange={handleChange}
+          variant="outlined"
+        />
+        <TextField
+          label="Years to Save"
+          type="number"
+          name="yearsToSave"
+          value={formData.yearsToSave}
+          onChange={handleChange}
+          variant="outlined"
+        />
+        <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+          Calculate
+        </Button>
+      </FormControl>
+    </Box>
   );
 }
 
