@@ -117,7 +117,7 @@ export default function Phenotype() {
             Your financial phenotype is <strong>IPF (Internal Pessimistic Frugal)</strong>.
             <br />
             <br></br>
-            <img src={ipf} width={230} height={320} className="center"></img>
+            <img alt="your_phenotype_character_image" src={ipf} width={230} height={320} className="center"></img>
             <br />
             <br />
             IPF individuals make financial decisions based on their own reasoning and principles,
