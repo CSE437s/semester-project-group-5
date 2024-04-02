@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
-import { useNavigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom";
+import { useSession } from "../components/SessionProvider";
 
 const initialScores = [
   { name: "Risk", responseScore: 0, totalScore: 0 },
@@ -18,9 +19,15 @@ export default function Quiz() {
   const [currentIndex, setcurrentIndex] = useState(0);
   const navigate = useNavigate();
 
+  // VERIFY SESSION
+  const session = useSession();
+  if (!session) {
+    navigate("/login"); // Redirect to login if no user is logged in
+  }
 
-  // Fetch question and options from Supabase
+  // ON COMPONENT MOUNT
   useEffect(() => {
+    // Fetch question and options from Supabase
     async function fetchQuestionAndOptions() {
       const { data: questions, error } = await supabase
         .from("Questions")
@@ -38,6 +45,7 @@ export default function Quiz() {
     fetchQuestionAndOptions();
   }, []);
 
+  // FUNCTIONS
   const handleOptionClick = (optionId) => {
     setSelectedOption(optionId);
   };
@@ -59,13 +67,13 @@ export default function Quiz() {
   }
 
   // Usage example
-
   const handleContinueClick = async () => {
     const updatedScore = factorScore.map((item) =>
       item.name === questions[currentIndex].primaryFactor
         ? {
             ...item,
-            responseScore: item.responseScore + questions[currentIndex].options[selectedOption].focusScore,
+            responseScore:
+              item.responseScore + questions[currentIndex].options[selectedOption].focusScore,
             totalScore: item.totalScore + 4,
           }
         : item
@@ -80,7 +88,7 @@ export default function Quiz() {
       const uid = data.session.user.id;
       const responseData = { userID: uid, factorScores: factorScore };
       createResponseEntry(responseData);
-      navigate('/home/phenotype');
+      navigate("/home/phenotype");
       //TODO: Navigate somewhere
     } else {
       setcurrentIndex(currentIndex + 1);
