@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabase";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { useSession } from "../components/SessionProvider";
 
 const initialScores = [
@@ -22,7 +23,7 @@ export default function Quiz() {
   // VERIFY SESSION
   const session = useSession();
   if (!session) {
-    navigate("/login"); // Redirect to login if no user is logged in
+    return <Navigate to="/login" replace />; // Redirect to login if no user is logged in
   }
 
   // ON COMPONENT MOUNT
