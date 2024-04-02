@@ -1,4 +1,9 @@
-import { Login as LoginIcon, Logout as LogoutIcon, Menu as MenuIcon } from "@mui/icons-material";
+import {
+  Login as LoginIcon,
+  Logout as LogoutIcon,
+  Menu as MenuIcon,
+  ArrowDropDown as ArrowDropDownIcon,
+} from "@mui/icons-material";
 
 import {
   AppBar,
@@ -25,6 +30,7 @@ import { supabase } from "../supabase";
 export function LayoutNav() {
   const session = useSession();
   const [menuAnchor, setMenuAnchor] = useState(null);
+  const [calcMenuAnchor, setCalcMenuAnchor] = useState(null); // New state for Calculators dropdown
   const location = useLocation();
   // Check if there are child routes under the current location
   const hasChildRoutes = location.pathname !== "/";
@@ -33,6 +39,11 @@ export function LayoutNav() {
     setMenuAnchor(event.currentTarget);
   };
   const onCloseMenu = () => setMenuAnchor(null);
+
+  const onOpenCalcMenu = (event) => {
+    setCalcMenuAnchor(event.currentTarget);
+  };
+  const onCloseCalcMenu = () => setCalcMenuAnchor(null);
 
   return (
     <>
@@ -52,9 +63,25 @@ export function LayoutNav() {
               <NavLink to="/home/about">About</NavLink>
               <NavLink to="/home/quiz">Phenotype Test</NavLink>
               <NavLink to="/home/phenotype">Results</NavLink>
-              <NavLink to="/home/nowvslater">Savings Calculator</NavLink>
+              <Button color="inherit" onClick={onOpenCalcMenu} endIcon={<ArrowDropDownIcon />}>
+                Calculators
+              </Button>
+              {/* Calculators Dropdown Menu */}
+              <Menu
+                anchorEl={calcMenuAnchor}
+                open={Boolean(calcMenuAnchor)}
+                onClose={onCloseCalcMenu}
+              >
+                <MenuItem onClick={onCloseCalcMenu} component={Link} to="/home/nowvslater">
+                  Savings Calculator
+                </MenuItem>
+                <MenuItem onClick={onCloseCalcMenu} component={Link} to="/home/rentvsbuy">
+                  Rent vs Buy
+                </MenuItem>
+                {/* Add more links as needed */}
+              </Menu>
+              {/* End of Calculators Dropdown */}{" "}
             </Stack>
-
             <IconButton
               onClick={onOpenMenu}
               sx={{
@@ -63,23 +90,11 @@ export function LayoutNav() {
             >
               <MenuIcon />
             </IconButton>
-
             {/* ALSO UPDATE NAVBAR HERE */}
             <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem to="/home/about" label="About" onClick={onCloseMenu} />
-            </Menu>
-            <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem to="/home/quiz" label="Phenotype Test" onClick={onCloseMenu} />
-            </Menu>
-            <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
               <MenuLinkItem to="/home/phenotype" label="Your Results" onClick={onCloseMenu} />
-            </Menu>
-            <Menu anchorEl={menuAnchor} open={menuAnchor !== null} onClose={onCloseMenu}>
-              <MenuLinkItem
-                to="/home/nowvslater"
-                label="Savings Calculator"
-                onClick={onCloseMenu}
-              />
             </Menu>
           </Box>
 
