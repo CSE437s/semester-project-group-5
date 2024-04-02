@@ -1,32 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const BuyInputForm = ({ onBuyDataChange }) => {
-  // Define state for each input field
-  const [homePrice, setHomePrice] = useState('');
-  const [downPayment, setDownPayment] = useState('');
-  const [interestRate, setInterestRate] = useState('');
-  const [loanTerm, setLoanTerm] = useState('30'); // Default to 30 years
-
-  // Update state on input change
-  const handleHomePriceChange = (e) => setHomePrice(e.target.value);
-  const handleDownPaymentChange = (e) => setDownPayment(e.target.value);
-  const handleInterestRateChange = (e) => setInterestRate(e.target.value);
-  const handleLoanTermChange = (e) => setLoanTerm(e.target.value);
-
-  // Handle the form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Pass the state to the parent component
-    onBuyDataChange({
-      homePrice,
-      downPayment,
-      interestRate,
-      loanTerm,
-    });
-  };
+const BuyInputForm = ({ values, onInputChange }) => {
+  // Destructure the values for ease of access
+  const { homePrice, downPayment, interestRate, loanTerm } = values;
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <div>
         <label htmlFor="homePrice">Home Price</label>
         <input
@@ -34,7 +13,7 @@ const BuyInputForm = ({ onBuyDataChange }) => {
           id="homePrice"
           name="homePrice"
           value={homePrice}
-          onChange={handleHomePriceChange}
+          onChange={onInputChange}
           required
         />
       </div>
@@ -45,7 +24,7 @@ const BuyInputForm = ({ onBuyDataChange }) => {
           id="downPayment"
           name="downPayment"
           value={downPayment}
-          onChange={handleDownPaymentChange}
+          onChange={onInputChange}
           required
         />
       </div>
@@ -57,7 +36,7 @@ const BuyInputForm = ({ onBuyDataChange }) => {
           id="interestRate"
           name="interestRate"
           value={interestRate}
-          onChange={handleInterestRateChange}
+          onChange={onInputChange}
           required
         />
       </div>
@@ -67,7 +46,7 @@ const BuyInputForm = ({ onBuyDataChange }) => {
           id="loanTerm"
           name="loanTerm"
           value={loanTerm}
-          onChange={handleLoanTermChange}
+          onChange={onInputChange}
           required
         >
           <option value="15">15</option>
@@ -75,8 +54,7 @@ const BuyInputForm = ({ onBuyDataChange }) => {
           {/* Add additional options as needed */}
         </select>
       </div>
-      <button type="submit">Calculate</button>
-    </form>
+    </div>
   );
 };
 

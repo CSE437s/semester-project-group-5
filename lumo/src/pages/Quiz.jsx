@@ -121,7 +121,7 @@ export default function Quiz() {
                 onClick={() => handleOptionClick(index)}
               >
                                 {JSON.stringify(option.optionText)}
-                              
+
               </button>
             ))}
                       
