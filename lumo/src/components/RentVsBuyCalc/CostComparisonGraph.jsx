@@ -1,10 +1,11 @@
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
@@ -13,27 +14,39 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend
 );
 
 const CostComparisonGraph = ({ rentCosts, buyCosts }) => {
-  // Assuming rentCosts and buyCosts are arrays of numbers representing costs over time
+  // Ensure rentCosts and buyCosts are arrays
+  rentCosts = Array.isArray(rentCosts) ? rentCosts : [];
+  buyCosts = Array.isArray(buyCosts) ? buyCosts : [];
+
+  // Generating labels based on the larger of the two arrays
+  const labels = Array.from({ length: Math.max(rentCosts.length, buyCosts.length) }, (_, i) => `Year ${i + 1}`);
 
   const data = {
-    labels: rentCosts.map((_, index) => `Year ${index + 1}`),
+    labels: labels,
     datasets: [
       {
         label: 'Rent Costs',
         data: rentCosts,
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        fill: true,
+        tension: 0.4
       },
       {
         label: 'Buy Costs',
         data: buyCosts,
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: true,
+        tension: 0.4
       },
     ],
   };
@@ -50,7 +63,7 @@ const CostComparisonGraph = ({ rentCosts, buyCosts }) => {
       x: {
         title: {
           display: true,
-          text: 'Time',
+          text: 'Time (Years)',
         },
       },
     },
@@ -67,8 +80,8 @@ const CostComparisonGraph = ({ rentCosts, buyCosts }) => {
   };
 
   return (
-    <div>
-      <Bar data={data} options={options} />
+    <div style={{ width: '100%', height: '400px' }}> {/* Set a height for the chart container */}
+      <Line data={data} options={options} />
     </div>
   );
 };
