@@ -49,7 +49,7 @@ const RentVsBuyCalculatorPage = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{  p: 2, borderRadius: 1 }}>
+    <Container maxWidth="sm" sx={{ bgcolor: 'transparent', p: 2, borderRadius: 1 }}>
       <Box
         sx={{
           display: 'flex',
@@ -57,29 +57,36 @@ const RentVsBuyCalculatorPage = () => {
           justifyContent: 'center',
           alignItems: 'center',
           '& .MuiTextField-root': {
-            m: 1, // Space between TextField components
-            width: '100%', // Full width
+            m: 1,
+            width: '100%',
             '& .MuiInputBase-input': {
-              color: 'white', // Make text white to stand out against the dark background
+              color: 'white',
             },
             '& .MuiInputLabel-root': {
-              color: 'grey', // A lighter color for labels for better visibility
+              color: 'grey',
             },
             '& label.Mui-focused': {
-              color: 'orange', // Color of the label when the input is focused
+              color: 'orange',
             },
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
-                borderColor: 'white', // Border color of the TextField
+                borderColor: 'white',
               },
               '&:hover fieldset': {
-                borderColor: 'orange', // Border color of the TextField on hover
+                borderColor: 'orange',
               },
               '&.Mui-focused fieldset': {
-                borderColor: 'orange', // Border color when the input is focused
+                borderColor: 'orange',
               },
             },
-          }
+          },
+          '& .MuiButton-root': {
+            mt: 2,
+            bgcolor: 'orange',
+            '&:hover': {
+              bgcolor: 'darkorange',
+            },
+          },
         }}
       >
         <h1 style={{ color: 'white' }}>Rent vs Buy Calculator</h1>
@@ -124,7 +131,18 @@ const RentVsBuyCalculatorPage = () => {
             <option value="15">15</option>
             <option value="30">30</option>
           </TextField>
-          <Button variant="contained" type='submit' onClick={handleCalculate} fullWidth>
+          <Button
+            variant="contained"
+            onClick={handleCalculate}
+            fullWidth
+            sx={{
+              mt: 2,
+              bgcolor: 'orange',
+              '&:hover': {
+                bgcolor: 'darkorange',
+              },
+            }}
+          >
             Calculate
           </Button>
         </Box>
