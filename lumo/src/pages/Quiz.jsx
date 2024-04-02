@@ -122,7 +122,7 @@ export default function Quiz() {
                 }}
                 onClick={() => handleOptionClick(index)}
               >
-                {option.optionText}
+                {JSON.stringify(option.optionText)}
               </button>
             ))}
           </div>
