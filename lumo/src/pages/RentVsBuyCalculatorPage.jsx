@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import RentInputForm from '../components/RentVsBuyCalc/RentInputForm';
 import BuyInputForm from '../components/RentVsBuyCalc/BuyInputForm';
 import CostComparisonGraph from '../components/RentVsBuyCalc/CostComparisonGraph';
-import CostBreakdown from '../components/RentVsBuyCalc/CostBreakdown';
+//import CostBreakdown from '../components/RentVsBuyCalc/CostBreakdown';
 import { calculateRentVsBuy } from '../services/rentVsBuyCalculator';
 import styles from './RentVsBuyCalculatorPage.module.css';
 
@@ -62,7 +62,8 @@ const RentVsBuyCalculatorPage = () => {
         </button>
       </div>
       <CostComparisonGraph rentCosts={results.rent} buyCosts={results.buy} />
-      <CostBreakdown rentCosts={results.rent} buyCosts={results.buy} />
+      {/* CostBreakdown component has been removed */}
+      {/* <CostBreakdown rentCosts={results.rent} buyCosts={results.buy} /> */}
     </div>
   );
 };
