@@ -94,18 +94,18 @@ export default function Quiz() {
 
   return (
     <div style={{ maxWidth: "800px", margin: "auto", textAlign: "center" }}>
-            <h1>Quiz</h1>
-            <h3>Progress</h3>
-            <progress value={(currentIndex / questions.length ?? 1) * 100} max="100"></progress>
-            
+      <h1>Quiz</h1>
+      <h3>Progress</h3>
+      <progress value={(currentIndex / questions.length ?? 1) * 100} max="100"></progress>
+      
       {questions && questions.length > 0 ? (
         <>
-                    <p>{questions[currentIndex].questionText}</p>
-                    
+          <p>{questions[currentIndex].questionText}</p>
+          
           <div
             style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}
           >
-                        
+            
             {questions[currentIndex].options.map((option, index) => (
               <button
                 key={index}
@@ -120,19 +120,17 @@ export default function Quiz() {
                 }}
                 onClick={() => handleOptionClick(index)}
               >
-                                {JSON.stringify(option.optionText)}
+                {JSON.stringify(option.optionText)}
 
               </button>
             ))}
-                      
+            
           </div>
-                    {selectedOption + 1 && <button onClick={handleContinueClick}>Continue</button>}
-                  
+          {selectedOption + 1 && <button onClick={handleContinueClick}>Continue</button>}
         </>
       ) : (
         <p>Loading...</p>
       )}
-          
     </div>
   );
 }
