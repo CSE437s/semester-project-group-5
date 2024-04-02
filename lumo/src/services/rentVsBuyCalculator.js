@@ -4,38 +4,28 @@ export const calculateRentVsBuy = (rentData, buyData) => {
   const numberOfPayments = buyData.loanTerm * 12;
 
   // Monthly mortgage payment calculation using the formula:
-  // M = P[r(1+r)^n]/[(1+r)^n-1]
   const monthlyMortgagePayment = loanAmount * 
     (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments)) / 
     (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1);
 
-  // Calculate total cost of buying
-  const totalBuyCost = monthlyMortgagePayment * numberOfPayments;
+  // Initialize the cost arrays
+  const rentCostsOverTime = [];
+  const buyCostsOverTime = [];
 
-  // Calculate total cost of renting
-  const totalRentCost = rentData.monthlyRent * numberOfPayments;
+  // Populate the cost arrays
+  for (let year = 1; year <= buyData.loanTerm; year++) {
+    const yearlyRentCost = rentData.monthlyRent * 12 * year;
+    rentCostsOverTime.push(yearlyRentCost);
 
-  // Calculate the monthly and total cost difference
-  const monthlyCostDifference = monthlyMortgagePayment - rentData.monthlyRent;
-  const totalCostDifference = totalBuyCost - totalRentCost;
+    const yearlyBuyCost = monthlyMortgagePayment * 12 * year;
+    buyCostsOverTime.push(yearlyBuyCost);
+  }
 
   // Compile the results
   const results = {
-    buy: {
-      monthly: monthlyMortgagePayment,
-      total: totalBuyCost,
-    },
-    rent: {
-      monthly: rentData.monthlyRent,
-      total: totalRentCost,
-    },
-    difference: {
-      monthly: monthlyCostDifference,
-      total: totalCostDifference,
-    }
+    buy: buyCostsOverTime,
+    rent: rentCostsOverTime,
   };
 
   return results;
 };
-
-

@@ -6,16 +6,33 @@ import CostBreakdown from '../components/RentVsBuyCalc/CostBreakdown';
 import { calculateRentVsBuy } from '../services/rentVsBuyCalculator';
 import styles from './RentVsBuyCalculatorPage.module.css';
 
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Error boundary caught an error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
+}
+
 const RentVsBuyCalculatorPage = () => {
-  // States to hold form inputs for rent and buy calculations
-  const [rentInputs, setRentInputs] = useState({ monthlyRent: '' });
-  const [buyInputs, setBuyInputs] = useState({
-    homePrice: '',
-    downPayment: '',
-    interestRate: '',
-    loanTerm: 30, // Default loan term
-  });
-  const [results, setResults] = useState(null);
+  const [rentInputs, setRentInputs] = useState({});
+  const [buyInputs, setBuyInputs] = useState({});
+  const [results, setResults] = useState({ rent: [], buy: [] });
 
   const handleRentInputChange = (inputs) => {
     setRentInputs(inputs);
@@ -25,10 +42,23 @@ const RentVsBuyCalculatorPage = () => {
     setBuyInputs(inputs);
   };
 
-  const handleSubmit = () => {
+  const handleCalculate = async () => {
     // Perform validation if necessary
-    const calculatedResults = calculateRentVsBuy(rentInputs, buyInputs);
-    setResults(calculatedResults);
+    if (isValidInput(rentInputs) && isValidInput(buyInputs)) {
+      try {
+        const calculatedResults = await calculateRentVsBuy(rentInputs, buyInputs);
+        setResults(calculatedResults);
+      } catch (error) {
+        console.error('Error during calculation:', error);
+      }
+    } else {
+      console.error('Invalid input for calculation.');
+    }
+  };
+
+  // A simple validation function, you can add more complex logic
+  const isValidInput = (inputs) => {
+    return Object.values(inputs).every(input => input !== null && input !== '');
   };
 
   return (
@@ -37,16 +67,18 @@ const RentVsBuyCalculatorPage = () => {
       <div className={styles.formContainer}>
         <RentInputForm onRentDataChange={handleRentInputChange} />
         <BuyInputForm onBuyDataChange={handleBuyInputChange} />
-        <button onClick={handleSubmit} className={styles.button}>
+        <button onClick={handleCalculate} className={styles.button}>
           Calculate
         </button>
       </div>
-      {results && (
-        <>
-          <CostComparisonGraph rentCosts={results.rent} buyCosts={results.buy} />
-          <CostBreakdown rentCosts={results.rent} buyCosts={results.buy} />
-        </>
-      )}
+      <ErrorBoundary>
+        {results && (
+          <>
+            <CostComparisonGraph rentCosts={results.rent} buyCosts={results.buy} />
+            <CostBreakdown rentCosts={results.rent} buyCosts={results.buy} />
+          </>
+        )}
+      </ErrorBoundary>
     </div>
   );
 };
