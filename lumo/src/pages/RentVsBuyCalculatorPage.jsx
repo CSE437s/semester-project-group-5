@@ -6,79 +6,63 @@ import CostBreakdown from '../components/RentVsBuyCalc/CostBreakdown';
 import { calculateRentVsBuy } from '../services/rentVsBuyCalculator';
 import styles from './RentVsBuyCalculatorPage.module.css';
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false };
-  }
-
-  static getDerivedStateFromError(error) {
-    return { hasError: true };
-  }
-
-  componentDidCatch(error, errorInfo) {
-    console.error('Error boundary caught an error:', error, errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
-    }
-
-    return this.props.children;
-  }
-}
-
 const RentVsBuyCalculatorPage = () => {
-  const [rentInputs, setRentInputs] = useState({});
-  const [buyInputs, setBuyInputs] = useState({});
+  const [inputValues, setInputValues] = useState({
+    monthlyRent: '',
+    homePrice: '',
+    downPayment: '',
+    interestRate: '',
+    loanTerm: '30', // Default to 30 years
+  });
   const [results, setResults] = useState({ rent: [], buy: [] });
 
-  const handleRentInputChange = (inputs) => {
-    setRentInputs(inputs);
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setInputValues((prevValues) => ({
+      ...prevValues,
+      [name]: value
+    }));
   };
 
-  const handleBuyInputChange = (inputs) => {
-    setBuyInputs(inputs);
-  };
+  const handleCalculate = () => {
+    const rentInputs = { monthlyRent: parseFloat(inputValues.monthlyRent) || 0 };
+    const buyInputs = {
+      homePrice: parseFloat(inputValues.homePrice) || 0,
+      downPayment: parseFloat(inputValues.downPayment) || 0,
+      interestRate: parseFloat(inputValues.interestRate) || 0,
+      loanTerm: parseInt(inputValues.loanTerm, 10) || 0
+    };
 
-  const handleCalculate = async () => {
-    // Perform validation if necessary
     if (isValidInput(rentInputs) && isValidInput(buyInputs)) {
-      try {
-        const calculatedResults = await calculateRentVsBuy(rentInputs, buyInputs);
-        setResults(calculatedResults);
-      } catch (error) {
-        console.error('Error during calculation:', error);
-      }
+      const calculatedResults = calculateRentVsBuy(rentInputs, buyInputs);
+      setResults(calculatedResults);
     } else {
       console.error('Invalid input for calculation.');
     }
   };
 
-  // A simple validation function, you can add more complex logic
   const isValidInput = (inputs) => {
-    return Object.values(inputs).every(input => input !== null && input !== '');
+    return Object.values(inputs).every((input) => !isNaN(parseFloat(input)));
   };
 
   return (
     <div className={styles.pageContainer}>
       <h1>Rent vs Buy Calculator</h1>
       <div className={styles.formContainer}>
-        <RentInputForm onRentDataChange={handleRentInputChange} />
-        <BuyInputForm onBuyDataChange={handleBuyInputChange} />
+        <RentInputForm
+          monthlyRent={inputValues.monthlyRent}
+          onInputChange={handleInputChange}
+        />
+        <BuyInputForm
+          values={inputValues}
+          onInputChange={handleInputChange}
+        />
         <button onClick={handleCalculate} className={styles.button}>
           Calculate
         </button>
       </div>
-      <ErrorBoundary>
-        {results && (
-          <>
-            <CostComparisonGraph rentCosts={results.rent} buyCosts={results.buy} />
-            <CostBreakdown rentCosts={results.rent} buyCosts={results.buy} />
-          </>
-        )}
-      </ErrorBoundary>
+      <CostComparisonGraph rentCosts={results.rent} buyCosts={results.buy} />
+      <CostBreakdown rentCosts={results.rent} buyCosts={results.buy} />
     </div>
   );
 };
