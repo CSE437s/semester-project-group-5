@@ -30,8 +30,8 @@ export default function App() {
           </Route>
           {/* Add other routes here as needed */}
         </Routes>
+        <Chatbot />
       </Router>
-      <Chatbot />
     </>
   );
 }
