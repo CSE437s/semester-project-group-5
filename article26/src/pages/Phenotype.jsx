@@ -10,7 +10,9 @@ import ipf from "../assets/ipf_character.png";
 export default function Phenotype() {
   const [resultsAvailable, setResultsAvailable] = useState(false);
   const [responses, setResponses] = useState({});
+  const [phenotypeResponses, setPhenotypeResponses] = useState({});
   const [factorScores, setFactorScores] = useState({});
+  const [phenotypeInformation, setPhenotypeInformation] = useState({});
   const [graphData, setGraphData] = useState({});
 
   // VERYFY SESSION
@@ -45,7 +47,25 @@ export default function Phenotype() {
         setResultsAvailable(true);
         setGraphData(getGraphData(responses[0].factorScores));
       }
+
+       const { data: phenotypeResponses, error2 } = await supabase
+        .from("Phenotypes")
+        .select("phenotype, information, introduction, phenotypeFullForm");
+
+         if (error2) {
+        console.error("Error fetching question and options:", error2.message);
+        return;
+      }
+
+        if (phenotypeResponses && phenotypeResponses.length > 0) {
+        setPhenotypeResponses(phenotypeResponses);
+        console.log(phenotypeResponses)
+        setPhenotypeInformation(phenotypeResponses[7])
+      }
     }
+
+   
+
     fetchResponses();
   }, []);
 
@@ -88,15 +108,11 @@ export default function Phenotype() {
           </Typography>
 
           <Typography maxWidth="sm" variant="body1" marginTop={2}>
-            In the world of personal finance, IPF individuals exhibit a wide range of financial
-            personalities that are influenced by a combination of internal and external factors.
-            These personalities can be broadly categorized into eight distinct types based on their
-            emotional orientation, strategic approach, and the extent to which they are influenced
-            by internal and external factors. Let&apos;s explore each of these financial
-            personalities:
+           {JSON.stringify(phenotypeInformation.introduction)}
+           
             <br></br>
             <br></br>
-            Your financial phenotype is <strong>IPF (Internal Pessimistic Frugal)</strong>.
+            Your financial phenotype is <strong>{phenotypeInformation.phenotypeFullForm}</strong>.
             <br />
             <br></br>
             <img
@@ -107,13 +123,6 @@ export default function Phenotype() {
               className="center"
             ></img>
             <br />
-            <br />
-            IPF individuals make financial decisions based on their own reasoning and principles,
-            rather than external influences. Often pessimistic about financial outcomes, they tend
-            to be cautious and anxious. With a frugal approach to money management, they focus on
-            long-term financial stability, avoiding impulsive spending and investing in low-risk
-            assets. Their primary objective is financial security, and they are reluctant to engage
-            in risky endeavors.
             <br />
           </Typography>
           <RadarChart outerRadius={130} width={520} height={400} data={graphData}>
@@ -130,42 +139,34 @@ export default function Phenotype() {
             <Legend />
           </RadarChart>
 
-          <Typography maxWidth="sm" variant="body1" marginTop={2}>
+          {/* <Typography maxWidth="sm" variant="body1" marginTop={2}> */}
             <br />
             <br />
             <div>
-              <strong>Definition:</strong>{" "}
-              <p>
-                IPF individuals are internally guided, cautious, and frugal. They prioritize
-                long-term financial stability and are hesitant about taking risks.
-              </p>
-              <strong>Contextual Examples:</strong>{" "}
-              <p>
-                Creating detailed budgets, preferring savings accounts, and conservative investments
-                such as bonds.
-              </p>
-              <strong>Potential Pitfalls and Strengths:</strong>
+              {phenotypeInformation.information && phenotypeInformation.information.length > 0 ? ( 
+                <>
+               {phenotypeInformation.information.map((phenotypeInfo, index) => (
+                <div key = {index}>
+                <strong>{phenotypeInfo.title}</strong>
+                {phenotypeInfo.description.split('\n').map((item, key) => {
+      return <p key={key}>{item}<br /></p>;
+      })}
+      <br></br>
+                </div>
+            ))}
+            </>
+          ) : (
+        <p>Loading...</p>
+      )}
               <br></br>
               <br></br>
-              <strong>Pitfalls</strong> <p>May miss growth opportunities due to risk aversion.</p>
-              <strong>Strengths</strong> <p>Financial stability and predictability.</p>
-              <strong>Adjustment/Learning and Exceptions/Nuances:</strong>{" "}
-              <p>Could benefit from moderate, calculated risk-taking.</p>
-              <strong>Scope of Application:</strong>
-              <p> Best suited for conservative financial environments, retirement planning.</p>
-              <strong>Description:</strong>{" "}
-              <p>
-                IPF individuals make financial decisions based on their own reasoning and
-                principles, rather than external influences. Often pessimistic about financial
-                outcomes, they tend to be cautious and anxious. With a frugal approach to money
-                management, they focus on long-term financial stability, avoiding impulsive spending
-                and investing in low-risk assets. Their primary objective is financial security, and
-                they are reluctant to engage in risky endeavors.
-              </p>
-              <br></br>
-              <br></br>
+              
+              </div>
+              {/* </Typography> */}
+
               <h3>Big 6 Factors</h3>
               
+              <div>
                {factorScores.map((factorInfo, index) => (
                 <div key={index}>
               <br></br>
@@ -173,7 +174,7 @@ export default function Phenotype() {
               <br></br>
               <div>
                 <br></br>
-                <input type="range" min="0" max="100" value={getFactorPercentData(factorInfo)} className="center" />
+                <input type="range" min="0" max="100" defaultValue={getFactorPercentData(factorInfo)} className="center" />
                 <br></br>
               </div>
               <p>{factorInfo.description}</p>
@@ -181,10 +182,11 @@ export default function Phenotype() {
               <br></br>
               </div>
             ))}
+            
 
             </div>
             <br />
-          </Typography>
+          
         </Stack>
       ) : (
         <Button variant="contained" component={Link} to="/home/quiz" color="primary">
