@@ -10,6 +10,7 @@ import ipf from "../assets/ipf_character.png";
 export default function Phenotype() {
   const [resultsAvailable, setResultsAvailable] = useState(false);
   const [responses, setResponses] = useState({});
+  const [factorScores, setFactorScores] = useState({});
   const [graphData, setGraphData] = useState({});
 
   // VERYFY SESSION
@@ -40,6 +41,7 @@ export default function Phenotype() {
 
       if (responses && responses.length > 0) {
         setResponses(responses);
+        setFactorScores(responses[0].factorScores)
         setResultsAvailable(true);
         setGraphData(getGraphData(responses[0].factorScores));
       }
@@ -47,49 +49,23 @@ export default function Phenotype() {
     fetchResponses();
   }, []);
 
+  function getFactorPercentData(factorScore) {
+    return Math.round(100 * (factorScore.responseScore / factorScore.totalScore));
+  }
   // FUNCTIONS
   function getGraphData(factorScores) {
-    // Extracted data
-    let factorNames = [];
-    let factorRatios = [];
+
+    let data = [];
 
     for (var i = 0; i < factorScores.length; i++) {
-      factorNames.push(factorScores[i].name);
-      factorRatios.push(100 * (factorScores[i].responseScore / factorScores[i].totalScore));
+      data.push(
+        {
+        subject: factorScores[i].name,
+        A: getFactorPercentData(factorScores[i]),
+        fullMark: 100,
+        },
+      )
     }
-
-    const data = [
-      {
-        subject: factorNames[0],
-        A: factorRatios[0],
-        fullMark: 100,
-      },
-      {
-        subject: factorNames[1],
-        A: factorRatios[1],
-        fullMark: 100,
-      },
-      {
-        subject: factorNames[2],
-        A: factorRatios[2],
-        fullMark: 100,
-      },
-      {
-        subject: factorNames[3],
-        A: factorRatios[3],
-        fullMark: 100,
-      },
-      {
-        subject: factorNames[4],
-        A: factorRatios[4],
-        fullMark: 100,
-      },
-      {
-        subject: factorNames[5],
-        A: factorRatios[5],
-        fullMark: 100,
-      },
-    ];
     return data;
   }
 
@@ -189,107 +165,23 @@ export default function Phenotype() {
               <br></br>
               <br></br>
               <h3>Big 6 Factors</h3>
+              
+               {factorScores.map((factorInfo, index) => (
+                <div key={index}>
               <br></br>
-              <strong>Spending Habits: 60</strong>
+              <strong> {factorInfo.name}: {getFactorPercentData(factorInfo)}</strong>
               <br></br>
               <div>
                 <br></br>
-                <input type="range" min="0" max="100" value={60} className="center" />
+                <input type="range" min="0" max="100" value={getFactorPercentData(factorInfo)} className="center" />
                 <br></br>
               </div>
-              You strive to follow a budget, though occasional treats and surprises find their way
-              into your spending, showing an effort to balance enjoyment today with financial
-              responsibility for tomorrow. You struggle with budgeting and prefer a spontaneous
-              approach to spending. The allure of saving money through sales can lead to spontaneous
-              buying. You feel too busy with other responsibilities to assess your spending. You
-              limit spending on clothing, gadgets, and other shopping items when finances are
-              strained. It&apos;s harder to forgo immediate pleasures without defined financial
-              objectives.
+              <p>{factorInfo.description}</p>
+             
               <br></br>
-              <br></br>
-              <strong>Feeling: 64</strong>
-              <div>
-                <br></br>
-                <input type="range" min="0" max="100" value={64} className="center" />
-                <br></br>
               </div>
-              <br></br>
-              You&apos;re comfortable enough to discuss finances in familiar circles and manage
-              day-to-day budgeting with a moderate level of stress, showing an evolving competence
-              in personal financial management. You find that discussing financial matters with
-              peers provides mutual support. Managing the budget for daily sustenance can be
-              particularly stressful. You value the lasting memories created by experiences with
-              friends. Concerns about going into debt affect your confidence in credit card use.
-              Having a full scholarship eliminates the need to factor student loans into daily
-              spending.
-              <br></br>
-              <br></br>
-              <strong>Influence: 52</strong>
-              <div>
-                <br></br>
-                <input type="range" min="0" max="100" value={52} className="center" />
-                <br></br>
-              </div>
-              <br></br>
-              You consider the financial habits of those around you and occasionally consult with
-              family or online resources, but you maintain a degree of independence in your final
-              financial decisions. Your friends often inspire you to engage in more social spending
-              when they suggest group activities or shared experiences that involve financial costs.
-              Your family&apos;s financial knowledge may not be sufficient for your needs. Your
-              spending is focused on addressing current necessities. You don&apos;t engage in
-              writing online reviews or ratings. Your financial decisions are influenced by informal
-              advice from your social and family circle.
-              <br></br>
-              <br></br>
-              <strong>Planning: 40</strong>
-              <div>
-                <br></br>
-                <input type="range" min="0" max="100" value={40} className="center" />
-                <br></br>
-              </div>
-              <br></br>
-              You live in the moment, often without a detailed financial plan for future expenses or
-              emergencies, which can indicate a preference for immediate enjoyment over long-term
-              financial security. High-value items don&apos;t interest you enough to save for them.
-              An unpredictable outlook makes it challenging to establish financial milestones. Other
-              expenses take priority over leisure activities in your budget. You rely on peer advice
-              for price information and decision-making. Insufficient funds leave no room for
-              emergency savings.
-              <br></br>
-              <br></br>
-              <strong>Risk Tolerance: 60</strong>
-              <div>
-                <br></br>
-                <input type="range" min="0" max="100" value={60} className="center" />
-                <br></br>
-              </div>
-              <br></br>
-              You take a balanced approach to risk, sometimes investing in markets or new ventures
-              after thorough consideration, and you&apos;re prepared for some income variation while
-              preferring overall stability. Insufficient understanding of high-risk opportunities
-              keeps you cautious. A stable income is crucial to your financial well-being and
-              comfort. The process of diversifying income is an opportunity to gain new skills. The
-              complexity of financial markets discourages active engagement. Confidence in a
-              well-researched business plan encourages you to consider loans.
-              <br></br>
-              <br></br>
-              <strong>Knowledge: 56</strong>
-              <div>
-                <br></br>
-                <input type="range" min="0" max="100" value={56} className="center" />
-                <br></br>
-              </div>
-              <br></br>
-              You have a foundational understanding of financial management and make efforts to
-              educate yourself about key financial matters, indicating a developing financial
-              literacy. You have educated yourself on budgeting through your own research efforts.
-              You have diligently maintained or improved your credit score by consistently paying
-              bills on time. You find it challenging to allocate time to learn about investments due
-              to other commitments. The long-term impact of carrying debt is something you&apos;re
-              not fully comfortable with. You haven&apos;t explored much because you&apos;re unaware
-              of where to find resources for financial education.
-              <br></br>
-              <br></br>
+            ))}
+
             </div>
             <br />
           </Typography>

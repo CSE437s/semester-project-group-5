@@ -5,12 +5,12 @@ import { Navigate } from "react-router-dom";
 import { useSession } from "../components/SessionProvider";
 
 const initialScores = [
-  { name: "Risk", responseScore: 0, totalScore: 0 },
-  { name: "Feeling", responseScore: 0, totalScore: 0 },
-  { name: "Planning", responseScore: 0, totalScore: 0 },
-  { name: "Spending", responseScore: 0, totalScore: 0 },
-  { name: "Influence", responseScore: 0, totalScore: 0 },
-  { name: "Knowledge", responseScore: 0, totalScore: 0 },
+  { name: "Risk Tolerance", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
+  { name: "Feeling", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
+  { name: "Planning", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
+  { name: "Spending Habits", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
+  { name: "Influence", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
+  { name: "Knowledge", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
 ];
 
 export default function Quiz() {
