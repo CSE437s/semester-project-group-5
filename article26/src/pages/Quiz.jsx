@@ -53,13 +53,13 @@ export default function Quiz() {
       const { data, error } = await supabase.from("Responses").insert(responseData);
 
       if (error) {
-        console.error("Error creating entry 1:", error.message);
+        console.error("Error1 creating entry:", error.message);
         return null;
       }
       console.log("Entry created successfully:", data);
       return data;
     } catch (err) {
-      console.error("Error creating entry 2:", err.message);
+      console.error("Error2 creating entry:", err.message);
       return null;
     }
   } // Usage example
