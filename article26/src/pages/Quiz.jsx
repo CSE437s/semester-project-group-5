@@ -62,7 +62,39 @@ export default function Quiz() {
       console.error("Error2 creating entry:", err.message);
       return null;
     }
-  } // Usage example
+  } 
+
+  function getFactorPercentData(factorScore) {
+    return Math.round(100 * (factorScore.responseScore / factorScore.totalScore));
+  }
+  
+  function calculatePhenotype(factorScore){
+    let phenotypeLetters = [];
+    const iScore = getFactorPercentData(factorScore.find(item => item.name === "Influence"));
+    if (iScore < 63 ){
+      phenotypeLetters.push('I')
+    }
+    else {
+      phenotypeLetters.push('E')
+    }
+    const rScore = getFactorPercentData(factorScore.find(item => item.name === "Risk Tolerance"));
+    const fScore = getFactorPercentData(factorScore.find(item => item.name === "Feeling"));
+    if (rScore < 41 || rScore <= 56 && fScore < 86 || rScore <= 64 && fScore < 71 || rScore >= 64 && rScore < 71 && fScore > 56 || rScore >= 71 && rScore < 86 && fScore > 41){
+      phenotypeLetters.push('P')
+    }
+    else {
+      phenotypeLetters.push('O')
+    }
+    const pScore = getFactorPercentData(factorScore.find(item => item.name === "Planning"));
+    const sScore = getFactorPercentData(factorScore.find(item => item.name === "Spending Habits"));
+    if (pScore < 41 || pScore <= 56 && sScore < 86 || pScore <= 64 && sScore < 71 || pScore >= 64 && pScore < 71 && sScore > 56 || pScore >= 71 && pScore < 86 && sScore > 41){
+      phenotypeLetters.push('F')
+    }
+    else {
+      phenotypeLetters.push('I')
+    }
+    return phenotypeLetters.join('');
+  }// Usage example
 
   const handleContinueClick = async () => {
     const updatedScore = factorScore.map((item) =>
@@ -83,7 +115,8 @@ export default function Quiz() {
         return null;
       }
       const uid = data.session.user.id;
-      const responseData = { userID: uid, factorScores: factorScore };
+      const phenotype = calculatePhenotype(factorScore);
+      const responseData = { userID: uid, factorScores: factorScore, phenotype: phenotype };
       createResponseEntry(responseData);
       navigate("/home/phenotype"); //TODO: Navigate somewhere
     } else {
@@ -120,7 +153,7 @@ export default function Quiz() {
                 }}
                 onClick={() => handleOptionClick(index)}
               >
-                {JSON.stringify(option.optionText)}
+                {(option.optionText.replace(/'/g, "'"))}
 
               </button>
             ))}

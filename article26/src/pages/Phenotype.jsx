@@ -174,7 +174,7 @@ export default function Phenotype() {
               <br></br>
               <div>
                 <br></br>
-                <input type="range" min="0" max="100" defaultValue={getFactorPercentData(factorInfo)} className="center" />
+                <input type="range" min="0" max="100" defaultValue={getFactorPercentData(factorInfo)} className="center" disabled/>
                 <br></br>
               </div>
               <p>{factorInfo.description}</p>
