@@ -6,7 +6,8 @@ import ChatIcon from "@mui/icons-material/Chat";
 import CloseIcon from "@mui/icons-material/Close";
 import { DeepChat } from "deep-chat-react";
 import { useLocation } from "react-router-dom";
-import { openAIKey } from "../openAI";
+
+export const openAIKey = process.env.REACT_APP_OPENAI_API_KEY;
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
