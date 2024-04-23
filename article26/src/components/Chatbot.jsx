@@ -66,11 +66,10 @@ const Chatbot = () => {
           <>
             <div>
               <DeepChat
-                systemPrompt={systemContextPrompt}
                 directConnection={{
                   openAI: {
                     key: openAIKey,
-                    chat: { model: "gpt-3.5-turbo" },
+                    chat: { model: "gpt-3.5-turbo", system_prompt: systemContextPrompt },
                   },
                 }}
                 style={{ borderRadius: "10px" }}
