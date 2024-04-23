@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import { useSession } from "../components/SessionProvider";
 import { supabase } from "../supabase";
 import { Navigate } from "react-router-dom";
-import IPF from "../assets/ipf_character.png";
+import React from 'react';
+import PhenotypeImage from '../components/phenotype_image';
 
 export default function Phenotype() {
   const [resultsAvailable, setResultsAvailable] = useState(false);
@@ -33,7 +34,7 @@ export default function Phenotype() {
       const uid = data.session.user.id;
       const { data: responses, error } = await supabase
         .from("Responses")
-        .select("userID, factorScores")
+        .select("userID, factorScores, phenotype")
         .eq("userID", uid);
 
       if (error) {
@@ -60,7 +61,8 @@ export default function Phenotype() {
       if (phenotypeResponses && phenotypeResponses.length > 0) {
         setPhenotypeResponses(phenotypeResponses);
         console.log(phenotypeResponses);
-        setPhenotypeInformation(phenotypeResponses[7]);
+        const matchingResponse = phenotypeResponses.find(response => response.phenotype === responses[0].phenotype);        
+        setPhenotypeInformation(matchingResponse);
       }
     }
 
@@ -109,13 +111,7 @@ export default function Phenotype() {
             Your financial phenotype is <strong>{phenotypeInformation.phenotypeFullForm}</strong>.
             <br />
             <br></br>
-            <img
-              alt="your_phenotype_character_image"
-              src={IPF}
-              width={230}
-              height={320}
-              className="center"
-            ></img>
+                  <PhenotypeImage phenotype={phenotypeInformation.phenotype} />
             <br />
             <br />
           </Typography>
