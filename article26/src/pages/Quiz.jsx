@@ -180,24 +180,15 @@ export default function Quiz() {
       let currentDesc = scoreDescriptions[item.name] 
       let currentScore = getFactorPercentData(item)
       var index = 0;
-
-      switch(currentScore) {
-        case currentScore > 86:
+      if (currentScore > 86) {
           index = 4;
-          break;
-        case currentScore > 71 && currentScore < 86:
+        } else if (currentScore > 71 && currentScore < 86) {
           index = 3;
-          break;
-        case currentScore > 56 && currentScore < 71:
+        } else if (currentScore > 56 && currentScore < 71) {
           index = 2;
-          break;
-        case currentScore > 40 && currentScore < 56:
+        } else if (currentScore > 40 && currentScore < 56) {
           index = 1;
-          break;
-        default:
-          index = 0;
-      }
-      console.log('desc: ', currentDesc[index])
+        } 
       return {
             ...item,
             description: currentDesc[index]
