@@ -10,6 +10,7 @@ import Quiz from "./pages/Quiz";
 import Chatbot from "./components/Chatbot";
 import SavingsCalculatorPage from "./pages/SavingsCalculatorPage";
 import RentVsBuyCalculatorPage from "./pages/RentVsBuyCalculatorPage";
+import InvestmentCalculatorPage from "./pages/InvestmentCalculatorPage"; 
 
 
 import { supabase } from "./supabase";
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="quiz" element={<Quiz />} />
             <Route path="nowvslater" element={<SavingsCalculatorPage />} />
             <Route path="rentvsbuy" element={<RentVsBuyCalculatorPage />} />
+            <Route path="investment" element={<InvestmentCalculatorPage />} /> {/* Note no leading slash */}
           </Route>
           {/* Add other routes here as needed */}
         </Routes>
