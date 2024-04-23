@@ -54,6 +54,14 @@ function InvestmentCalculatorPage() {
     );
     setInvestmentData(calculatedResults.investmentData);
     setInvestmentDetails(calculatedResults.investmentDetails);
+  }; 
+
+  // Style for the page title
+  const titleStyle = {
+    color: 'white', // Adjust the color to fit your theme
+    textAlign: 'center',
+    margin: '20px 0', // Provides space above and below the title
+    fontSize: '60px' // Adjust the size as needed
   };
 
   // Style for the entire page
@@ -71,6 +79,7 @@ function InvestmentCalculatorPage() {
 
   return (
     <div style={pageStyle}>
+      <h1 style={titleStyle}>Investment Calculator</h1> {/* Title for the page */}
       <InvestmentInputForm onSubmit={handleFormSubmit} />
       {
         investmentData && investmentData.length > 0 
