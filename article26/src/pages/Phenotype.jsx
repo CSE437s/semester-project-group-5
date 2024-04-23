@@ -4,9 +4,8 @@ import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend }
 import { Link, Navigate } from "react-router-dom";
 import { useSession } from "../components/SessionProvider";
 import { supabase } from "../supabase";
-import { Navigate } from "react-router-dom";
-import React from 'react';
-import PhenotypeImage from '../components/phenotype_image';
+import React from "react";
+import PhenotypeImage from "../components/phenotype_image";
 
 export default function Phenotype() {
   const [resultsAvailable, setResultsAvailable] = useState(false);
@@ -57,7 +56,9 @@ export default function Phenotype() {
       if (phenotypeResponses && phenotypeResponses.length > 0) {
         setPhenotypeResponses(phenotypeResponses);
         console.log(phenotypeResponses);
-        const matchingResponse = phenotypeResponses.find(response => response.phenotype === responses[0].phenotype);        
+        const matchingResponse = phenotypeResponses.find(
+          (response) => response.phenotype === responses[0].phenotype
+        );
         setPhenotypeInformation(matchingResponse);
       }
     }
