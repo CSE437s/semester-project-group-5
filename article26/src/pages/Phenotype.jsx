@@ -4,8 +4,8 @@ import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend }
 import { Link, Navigate } from "react-router-dom";
 import { useSession } from "../components/SessionProvider";
 import { supabase } from "../supabase";
-import React from 'react';
-import PhenotypeImage from '../components/phenotype_image';
+import React from "react";
+import PhenotypeImage from "../components/phenotype_image";
 
 export default function Phenotype() {
   const [resultsAvailable, setResultsAvailable] = useState(false);
@@ -56,7 +56,9 @@ export default function Phenotype() {
       if (phenotypeResponses && phenotypeResponses.length > 0) {
         console.log(phenotypeResponses);
         console.log(responsesData);
-        const matchingResponse = phenotypeResponses.find(response => response.phenotype === responsesData[0].phenotype);        
+        const matchingResponse = phenotypeResponses.find(
+          (response) => response.phenotype === responsesData[0].phenotype
+        );
         setPhenotypeInformation(matchingResponse);
       }
     }
@@ -96,8 +98,8 @@ export default function Phenotype() {
             <Radar
               name="Financial Fingerprint"
               dataKey="A"
-              stroke="#8884d8"
-              fill="#8884d8"
+              stroke="#DE932B"
+              fill="#DE932B"
               fillOpacity={0.6}
             />
             <Legend />
@@ -116,7 +118,9 @@ export default function Phenotype() {
             <Grid item xs={12} key={index}>
               <Card>
                 <CardContent>
-                  <Typography variant="h6">{info.title}</Typography>
+                  <Typography variant="h6" color={"primary"}>
+                    {info.title}
+                  </Typography>
                   {info.description.split("\n").map((item, key) => (
                     <Typography key={key}>{item}</Typography>
                   ))}
@@ -126,7 +130,8 @@ export default function Phenotype() {
           ))}
 
         <Grid item xs={12}>
-          <Typography variant="h6" component="div">
+          <Typography variant="h4" component="div" color={"primary"}>
+            <br />
             Big 6 Factors
           </Typography>
         </Grid>
@@ -135,10 +140,16 @@ export default function Phenotype() {
           <Grid item xs={12} sm={6} key={index}>
             <Card>
               <CardContent>
-                <Typography gutterBottom>
+                <Typography>
                   {factor.name}: {getFactorPercentData(factor)}%
                 </Typography>
-                <Slider value={getFactorPercentData(factor)} min={0} max={100} disabled />
+                <Slider
+                  value={getFactorPercentData(factor)}
+                  min={0}
+                  max={100}
+                  disabled
+                  color={"primary"}
+                />
                 <Typography>{factor.description}</Typography>
               </CardContent>
             </Card>
