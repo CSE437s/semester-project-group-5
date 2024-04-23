@@ -8,8 +8,6 @@ import App from "./App.jsx";
 import theme from "./theme.js";
 import "./index.css";
 
-require("dotenv").config();
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
