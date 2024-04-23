@@ -27,7 +27,7 @@ function PhenotypeImage({ phenotype }) {
       <img
         src={selectedImage}
         alt="Your Phenotype character image"
-        width={230}
+        width={420}
         height={320}
         className="center"
       />
