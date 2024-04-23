@@ -4,7 +4,9 @@ import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend }
 import { Link, Navigate } from "react-router-dom";
 import { useSession } from "../components/SessionProvider";
 import { supabase } from "../supabase";
-import IPF from "../assets/ipf_character.png";
+import { Navigate } from "react-router-dom";
+import React from 'react';
+import PhenotypeImage from '../components/phenotype_image';
 
 export default function Phenotype() {
   const [resultsAvailable, setResultsAvailable] = useState(false);
@@ -28,7 +30,7 @@ export default function Phenotype() {
       const uid = data.session.user.id;
       const { data: responsesData, error } = await supabase
         .from("Responses")
-        .select("userID, factorScores")
+        .select("userID, factorScores, phenotype")
         .eq("userID", uid);
 
       if (error) {
@@ -52,8 +54,11 @@ export default function Phenotype() {
         return;
       }
 
-      if (phenotypeData && phenotypeData.length > 0) {
-        setPhenotypeInformation(phenotypeData[0]); // Assuming the first record is the relevant one
+      if (phenotypeResponses && phenotypeResponses.length > 0) {
+        setPhenotypeResponses(phenotypeResponses);
+        console.log(phenotypeResponses);
+        const matchingResponse = phenotypeResponses.find(response => response.phenotype === responses[0].phenotype);        
+        setPhenotypeInformation(matchingResponse);
       }
     }
 
@@ -82,11 +87,7 @@ export default function Phenotype() {
 
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
-          <img
-            alt="your_phenotype_character_image"
-            src={IPF}
-            style={{ width: "70%", height: "auto" }}
-          />
+          <PhenotypeImage phenotype={phenotypeInformation.phenotype} />
         </Grid>
         <Grid item xs={12} md={6}>
           <RadarChart outerRadius={130} width={520} height={400} data={graphData}>
