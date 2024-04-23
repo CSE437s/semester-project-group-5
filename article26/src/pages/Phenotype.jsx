@@ -43,28 +43,26 @@ export default function Phenotype() {
 
       if (responses && responses.length > 0) {
         setResponses(responses);
-        setFactorScores(responses[0].factorScores)
+        setFactorScores(responses[0].factorScores);
         setResultsAvailable(true);
         setGraphData(getGraphData(responses[0].factorScores));
       }
 
-       const { data: phenotypeResponses, error2 } = await supabase
+      const { data: phenotypeResponses, error2 } = await supabase
         .from("Phenotypes")
         .select("phenotype, information, introduction, phenotypeFullForm");
 
-         if (error2) {
+      if (error2) {
         console.error("Error fetching question and options:", error2.message);
         return;
       }
 
-        if (phenotypeResponses && phenotypeResponses.length > 0) {
+      if (phenotypeResponses && phenotypeResponses.length > 0) {
         setPhenotypeResponses(phenotypeResponses);
-        console.log(phenotypeResponses)
-        setPhenotypeInformation(phenotypeResponses[7])
+        console.log(phenotypeResponses);
+        setPhenotypeInformation(phenotypeResponses[7]);
       }
     }
-
-   
 
     fetchResponses();
   }, []);
@@ -74,17 +72,14 @@ export default function Phenotype() {
   }
   // FUNCTIONS
   function getGraphData(factorScores) {
-
     let data = [];
 
     for (var i = 0; i < factorScores.length; i++) {
-      data.push(
-        {
+      data.push({
         subject: factorScores[i].name,
         A: getFactorPercentData(factorScores[i]),
         fullMark: 100,
-        },
-      )
+      });
     }
     return data;
   }
@@ -108,8 +103,7 @@ export default function Phenotype() {
           </Typography>
 
           <Typography maxWidth="sm" variant="body1" marginTop={2}>
-           {JSON.stringify(phenotypeInformation.introduction)}
-           
+            {JSON.stringify(phenotypeInformation.introduction)}
             <br></br>
             <br></br>
             Your financial phenotype is <strong>{phenotypeInformation.phenotypeFullForm}</strong>.
@@ -140,53 +134,64 @@ export default function Phenotype() {
           </RadarChart>
 
           {/* <Typography maxWidth="sm" variant="body1" marginTop={2}> */}
-            <br />
-            <br />
-            <div>
-              {phenotypeInformation.information && phenotypeInformation.information.length > 0 ? ( 
-                <>
-               {phenotypeInformation.information.map((phenotypeInfo, index) => (
-                <div key = {index}>
-                <strong>{phenotypeInfo.title}</strong>
-                {phenotypeInfo.description.split('\n').map((item, key) => {
-      return <p key={key}>{item}<br /></p>;
-      })}
-      <br></br>
+          <br />
+          <br />
+          <div>
+            {phenotypeInformation.information && phenotypeInformation.information.length > 0 ? (
+              <>
+                {phenotypeInformation.information.map((phenotypeInfo, index) => (
+                  <div key={index}>
+                    <strong>{phenotypeInfo.title}</strong>
+                    {phenotypeInfo.description.split("\n").map((item, key) => {
+                      return (
+                        <p key={key}>
+                          {item}
+                          <br />
+                        </p>
+                      );
+                    })}
+                    <br></br>
+                  </div>
+                ))}
+              </>
+            ) : (
+              <p>Loading...</p>
+            )}
+            <br></br>
+            <br></br>
+          </div>
+          {/* </Typography> */}
+
+          <h3>Big 6 Factors</h3>
+
+          <div>
+            {factorScores.map((factorInfo, index) => (
+              <div key={index}>
+                <br></br>
+                <strong>
+                  {" "}
+                  {factorInfo.name}: {getFactorPercentData(factorInfo)}
+                </strong>
+                <br></br>
+                <div>
+                  <br></br>
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    defaultValue={getFactorPercentData(factorInfo)}
+                    className="center"
+                    disabled
+                  />
+                  <br></br>
                 </div>
-            ))}
-            </>
-          ) : (
-        <p>Loading...</p>
-      )}
-              <br></br>
-              <br></br>
-              
-              </div>
-              {/* </Typography> */}
+                <p>{factorInfo.description}</p>
 
-              <h3>Big 6 Factors</h3>
-              
-              <div>
-               {factorScores.map((factorInfo, index) => (
-                <div key={index}>
-              <br></br>
-              <strong> {factorInfo.name}: {getFactorPercentData(factorInfo)}</strong>
-              <br></br>
-              <div>
-                <br></br>
-                <input type="range" min="0" max="100" defaultValue={getFactorPercentData(factorInfo)} className="center" disabled/>
                 <br></br>
               </div>
-              <p>{factorInfo.description}</p>
-             
-              <br></br>
-              </div>
             ))}
-            
-
-            </div>
-            <br />
-          
+          </div>
+          <br />
         </Stack>
       ) : (
         <Button variant="contained" component={Link} to="/home/quiz" color="primary">
