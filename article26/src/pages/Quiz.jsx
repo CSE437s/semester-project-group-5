@@ -185,13 +185,13 @@ export default function Quiz() {
         case currentScore > 86:
           index = 4;
           break;
-        case currentScore > 71:
+        case currentScore > 71 && currentScore < 86:
           index = 3;
           break;
-        case currentScore > 56:
+        case currentScore > 56 && currentScore < 71:
           index = 2;
           break;
-        case currentScore > 41:
+        case currentScore > 40 && currentScore < 56:
           index = 1;
           break;
         default:
