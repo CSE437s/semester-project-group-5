@@ -85,11 +85,7 @@ export default function Phenotype() {
         <br />
         Your Results
       </Typography>
-
       <Grid container spacing={4}>
-        <Grid item xs={12} md={6}>
-          <PhenotypeImage phenotype={phenotypeInformation.phenotype} />
-        </Grid>
         <Grid item xs={12} md={6}>
           <RadarChart outerRadius={130} width={520} height={400} data={graphData}>
             <PolarGrid />
@@ -104,6 +100,9 @@ export default function Phenotype() {
             />
             <Legend />
           </RadarChart>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <PhenotypeImage phenotype={phenotypeInformation.phenotype} />
         </Grid>
 
         <Grid item xs={12}>
