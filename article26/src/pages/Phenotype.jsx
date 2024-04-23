@@ -1,66 +1,59 @@
-import { Stack, Typography, Button } from "@mui/material";
-import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Legend } from "recharts";
-import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { Grid, Typography, Card, CardContent, Slider, Button, Container } from "@mui/material";
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, Legend } from "recharts";
+import { Link, Navigate } from "react-router-dom";
 import { useSession } from "../components/SessionProvider";
 import { supabase } from "../supabase";
-import { Navigate } from "react-router-dom";
 import IPF from "../assets/ipf_character.png";
 
 export default function Phenotype() {
   const [resultsAvailable, setResultsAvailable] = useState(false);
   const [responses, setResponses] = useState({});
-  const [phenotypeResponses, setPhenotypeResponses] = useState({});
-  const [factorScores, setFactorScores] = useState({});
   const [phenotypeInformation, setPhenotypeInformation] = useState({});
-  const [graphData, setGraphData] = useState({});
+  const [factorScores, setFactorScores] = useState([]);
+  const [graphData, setGraphData] = useState([]);
 
-  // VERYFY SESSION
   const session = useSession();
   if (!session) {
-    return <Navigate to="/login" replace />; // Redirect to login if no user is logged in
+    return <Navigate to="/login" replace />;
   }
 
-  // ON COMPONENT MOUNT
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
     async function fetchResponses() {
-      const { data, err } = await supabase.auth.getSession();
-      if (err) {
-        console.error("Error getting user:", error.message);
-        return null;
+      const { data, error: sessionError } = await supabase.auth.getSession();
+      if (sessionError) {
+        console.error("Error getting user:", sessionError.message);
+        return;
       }
       const uid = data.session.user.id;
-      const { data: responses, error } = await supabase
+      const { data: responsesData, error } = await supabase
         .from("Responses")
         .select("userID, factorScores")
         .eq("userID", uid);
 
       if (error) {
-        console.error("Error fetching question and options:", error.message);
+        console.error("Error fetching responses:", error.message);
         return;
       }
 
-      if (responses && responses.length > 0) {
-        setResponses(responses);
-        setFactorScores(responses[0].factorScores);
+      if (responsesData && responsesData.length > 0) {
+        setResponses(responsesData[0]);
+        setFactorScores(responsesData[0].factorScores);
         setResultsAvailable(true);
-        setGraphData(getGraphData(responses[0].factorScores));
+        setGraphData(getGraphData(responsesData[0].factorScores));
       }
 
-      const { data: phenotypeResponses, error2 } = await supabase
+      const { data: phenotypeData, error: phenotypeError } = await supabase
         .from("Phenotypes")
         .select("phenotype, information, introduction, phenotypeFullForm");
 
-      if (error2) {
-        console.error("Error fetching question and options:", error2.message);
+      if (phenotypeError) {
+        console.error("Error fetching phenotype data:", phenotypeError.message);
         return;
       }
 
-      if (phenotypeResponses && phenotypeResponses.length > 0) {
-        setPhenotypeResponses(phenotypeResponses);
-        console.log(phenotypeResponses);
-        setPhenotypeInformation(phenotypeResponses[7]);
+      if (phenotypeData && phenotypeData.length > 0) {
+        setPhenotypeInformation(phenotypeData[0]); // Assuming the first record is the relevant one
       }
     }
 
@@ -70,55 +63,32 @@ export default function Phenotype() {
   function getFactorPercentData(factorScore) {
     return Math.round(100 * (factorScore.responseScore / factorScore.totalScore));
   }
-  // FUNCTIONS
-  function getGraphData(factorScores) {
-    let data = [];
 
-    for (var i = 0; i < factorScores.length; i++) {
-      data.push({
-        subject: factorScores[i].name,
-        A: getFactorPercentData(factorScores[i]),
-        fullMark: 100,
-      });
-    }
-    return data;
+  function getGraphData(factorScores) {
+    return factorScores.map((score) => ({
+      subject: score.name,
+      A: getFactorPercentData(score),
+      fullMark: 100,
+    }));
   }
 
-  return (
-    <Stack
-      className="fullscreen"
-      direction={{
-        xs: "column",
-        md: "row-reverse",
-      }}
-      alignItems="center"
-      justifyContent="center"
-      padding={15}
-      spacing={4}
-    >
-      {resultsAvailable ? (
-        <Stack>
-          <Typography component="h1" variant="h4" textAlign="center" fontWeight="bold">
-            Results
-          </Typography>
+  return resultsAvailable ? (
+    <Container maxWidth="md">
+      <Typography component="h1" variant="h4" fontWeight="bold" textAlign="center" mb={4}>
+        <br />
+        <br />
+        Your Results
+      </Typography>
 
-          <Typography maxWidth="sm" variant="body1" marginTop={2}>
-            {JSON.stringify(phenotypeInformation.introduction)}
-            <br></br>
-            <br></br>
-            Your financial phenotype is <strong>{phenotypeInformation.phenotypeFullForm}</strong>.
-            <br />
-            <br></br>
-            <img
-              alt="your_phenotype_character_image"
-              src={IPF}
-              width={230}
-              height={320}
-              className="center"
-            ></img>
-            <br />
-            <br />
-          </Typography>
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={6}>
+          <img
+            alt="your_phenotype_character_image"
+            src={IPF}
+            style={{ width: "70%", height: "auto" }}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
           <RadarChart outerRadius={130} width={520} height={400} data={graphData}>
             <PolarGrid />
             <PolarAngleAxis dataKey="subject" />
@@ -132,73 +102,54 @@ export default function Phenotype() {
             />
             <Legend />
           </RadarChart>
+        </Grid>
 
-          {/* <Typography maxWidth="sm" variant="body1" marginTop={2}> */}
-          <br />
-          <br />
-          <div>
-            {phenotypeInformation.information && phenotypeInformation.information.length > 0 ? (
-              <>
-                {phenotypeInformation.information.map((phenotypeInfo, index) => (
-                  <div key={index}>
-                    <strong>{phenotypeInfo.title}</strong>
-                    {phenotypeInfo.description.split("\n").map((item, key) => {
-                      return (
-                        <p key={key}>
-                          {item}
-                          <br />
-                        </p>
-                      );
-                    })}
-                    <br></br>
-                  </div>
-                ))}
-              </>
-            ) : (
-              <p>Loading...</p>
-            )}
-            <br></br>
-            <br></br>
-          </div>
-          {/* </Typography> */}
+        <Grid item xs={12}>
+          <Typography variant="body1" textAlign="center">
+            Your financial phenotype is <strong>{phenotypeInformation.phenotypeFullForm}</strong>.
+            <br />
+          </Typography>
+        </Grid>
 
-          <h3>Big 6 Factors</h3>
+        {phenotypeInformation.information &&
+          phenotypeInformation.information.map((info, index) => (
+            <Grid item xs={12} key={index}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6">{info.title}</Typography>
+                  {info.description.split("\n").map((item, key) => (
+                    <Typography key={key}>{item}</Typography>
+                  ))}
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
 
-          <div>
-            {factorScores.map((factorInfo, index) => (
-              <div key={index}>
-                <br></br>
-                <strong>
-                  {" "}
-                  {factorInfo.name}: {getFactorPercentData(factorInfo)}
-                </strong>
-                <br></br>
-                <div>
-                  <br></br>
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    defaultValue={getFactorPercentData(factorInfo)}
-                    className="center"
-                    disabled
-                  />
-                  <br></br>
-                </div>
-                <p>{factorInfo.description}</p>
+        <Grid item xs={12}>
+          <Typography variant="h6" component="div">
+            Big 6 Factors
+          </Typography>
+        </Grid>
 
-                <br></br>
-              </div>
-            ))}
-          </div>
-          <br />
-        </Stack>
-      ) : (
-        <Button variant="contained" component={Link} to="/home/quiz" color="primary">
-          Take the Phenotype Test
-        </Button>
-      )}
-    </Stack>
+        {factorScores.map((factor, index) => (
+          <Grid item xs={12} sm={6} key={index}>
+            <Card>
+              <CardContent>
+                <Typography gutterBottom>
+                  {factor.name}: {getFactorPercentData(factor)}%
+                </Typography>
+                <Slider value={getFactorPercentData(factor)} min={0} max={100} disabled />
+                <Typography>{factor.description}</Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </Container>
+  ) : (
+    <Button variant="contained" component={Link} to="/home/quiz" color="primary" sx={{ mt: 4 }}>
+      Take the Phenotype Test
+    </Button>
   );
 }
 
