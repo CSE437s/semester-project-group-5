@@ -23,20 +23,26 @@ function InvestmentInputForm({ onSubmit }) {
   };
 
   const inputStyle = {
-    width: '100%',
+    width: '100%', // Ensures input fields take the full width
     padding: '8px',
     border: '1px solid #ccc',
     borderRadius: '4px'
   };
 
+  // Updated buttonStyle to match the input fields
   const buttonStyle = {
-    padding: '10px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    cursor: 'pointer'
-  };
+  width: '100%', // The button takes the full width of its parent
+  padding: '8px', // Same padding as the inputs
+  backgroundColor: 'orange',
+  color: 'white',
+  border: '1px solid #ccc', // Same border as the inputs
+  borderRadius: '4px',
+  cursor: 'pointer',
+  boxSizing: 'border-box', // Include padding and border in the width and height
+  marginTop: '8px', // Add some space above the button if needed
+};
+
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -47,6 +53,7 @@ function InvestmentInputForm({ onSubmit }) {
       rateOfReturn
     });
   };
+
 
   return (
     <form onSubmit={handleSubmit} style={formStyle}>
