@@ -11,6 +11,7 @@ import Chatbot from "./components/Chatbot";
 import SavingsCalculatorPage from "./pages/SavingsCalculatorPage";
 import RentVsBuyCalculatorPage from "./pages/RentVsBuyCalculatorPage";
 
+
 import { supabase } from "./supabase";
 import { createClient } from "@supabase/supabase-js";
 
