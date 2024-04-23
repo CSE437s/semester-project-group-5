@@ -7,7 +7,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { DeepChat } from "deep-chat-react";
 import { useLocation } from "react-router-dom";
 
-export const openAIKey = "nonsensekey";
+const openAIKey = import.meta.env.VITE_OPENAI_API_KEY;
+console.log(openAIKey);
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,12 +38,7 @@ const Chatbot = () => {
           <>
             <div>
               <DeepChat
-                directConnection={{
-                  openAI: {
-                    key: openAIKey,
-                    chat: { model: "gpt-3.5-turbo" },
-                  },
-                }}
+                demo={true}
                 style={{ borderRadius: "10px" }}
                 initialMessages={initialMessages}
               />
