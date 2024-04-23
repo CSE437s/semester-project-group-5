@@ -5,7 +5,7 @@ import { Box, Container } from "@mui/material";
 import Logo from "../components/Logo";
 
 import { Auth } from "@supabase/auth-ui-react";
-import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { ThemeSupa } from "../themeSupa";
 import { supabase } from "../supabase";
 import { useSession } from "../services/api";
 

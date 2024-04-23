@@ -3,14 +3,25 @@ import { supabase } from "../supabase";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import { useSession } from "../components/SessionProvider";
+import { Container, Button, Typography, Box, LinearProgress, Stack, Grid } from "@mui/material";
 
 const initialScores = [
-  { name: "Risk Tolerance", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
-  { name: "Feeling", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
-  { name: "Planning", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
-  { name: "Spending Habits", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
-  { name: "Influence", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
-  { name: "Knowledge", responseScore: 0, totalScore: 0, "description": "TBD based on Helen data" },
+  {
+    name: "Risk Tolerance",
+    responseScore: 0,
+    totalScore: 0,
+    description: "TBD based on Helen data",
+  },
+  { name: "Feeling", responseScore: 0, totalScore: 0, description: "TBD based on Helen data" },
+  { name: "Planning", responseScore: 0, totalScore: 0, description: "TBD based on Helen data" },
+  {
+    name: "Spending Habits",
+    responseScore: 0,
+    totalScore: 0,
+    description: "TBD based on Helen data",
+  },
+  { name: "Influence", responseScore: 0, totalScore: 0, description: "TBD based on Helen data" },
+  { name: "Knowledge", responseScore: 0, totalScore: 0, description: "TBD based on Helen data" },
 ];
 
 export default function Quiz() {
@@ -62,39 +73,50 @@ export default function Quiz() {
       console.error("Error2 creating entry:", err.message);
       return null;
     }
-  } 
+  }
 
   function getFactorPercentData(factorScore) {
     return Math.round(100 * (factorScore.responseScore / factorScore.totalScore));
   }
-  
-  function calculatePhenotype(factorScore){
+
+  function calculatePhenotype(factorScore) {
     let phenotypeLetters = [];
-    const iScore = getFactorPercentData(factorScore.find(item => item.name === "Influence"));
-    if (iScore < 63 ){
-      phenotypeLetters.push('I')
+    const iScore = getFactorPercentData(factorScore.find((item) => item.name === "Influence"));
+    if (iScore < 63) {
+      phenotypeLetters.push("I");
+    } else {
+      phenotypeLetters.push("E");
     }
-    else {
-      phenotypeLetters.push('E')
+    const rScore = getFactorPercentData(factorScore.find((item) => item.name === "Risk Tolerance"));
+    const fScore = getFactorPercentData(factorScore.find((item) => item.name === "Feeling"));
+    if (
+      rScore < 41 ||
+      (rScore <= 56 && fScore < 86) ||
+      (rScore <= 64 && fScore < 71) ||
+      (rScore >= 64 && rScore < 71 && fScore > 56) ||
+      (rScore >= 71 && rScore < 86 && fScore > 41)
+    ) {
+      phenotypeLetters.push("P");
+    } else {
+      phenotypeLetters.push("O");
     }
-    const rScore = getFactorPercentData(factorScore.find(item => item.name === "Risk Tolerance"));
-    const fScore = getFactorPercentData(factorScore.find(item => item.name === "Feeling"));
-    if (rScore < 41 || rScore <= 56 && fScore < 86 || rScore <= 64 && fScore < 71 || rScore >= 64 && rScore < 71 && fScore > 56 || rScore >= 71 && rScore < 86 && fScore > 41){
-      phenotypeLetters.push('P')
+    const pScore = getFactorPercentData(factorScore.find((item) => item.name === "Planning"));
+    const sScore = getFactorPercentData(
+      factorScore.find((item) => item.name === "Spending Habits")
+    );
+    if (
+      pScore < 41 ||
+      (pScore <= 56 && sScore < 86) ||
+      (pScore <= 64 && sScore < 71) ||
+      (pScore >= 64 && pScore < 71 && sScore > 56) ||
+      (pScore >= 71 && pScore < 86 && sScore > 41)
+    ) {
+      phenotypeLetters.push("F");
+    } else {
+      phenotypeLetters.push("I");
     }
-    else {
-      phenotypeLetters.push('O')
-    }
-    const pScore = getFactorPercentData(factorScore.find(item => item.name === "Planning"));
-    const sScore = getFactorPercentData(factorScore.find(item => item.name === "Spending Habits"));
-    if (pScore < 41 || pScore <= 56 && sScore < 86 || pScore <= 64 && sScore < 71 || pScore >= 64 && pScore < 71 && sScore > 56 || pScore >= 71 && pScore < 86 && sScore > 41){
-      phenotypeLetters.push('F')
-    }
-    else {
-      phenotypeLetters.push('I')
-    }
-    return phenotypeLetters.join('');
-  }// Usage example
+    return phenotypeLetters.join("");
+  } // Usage example
 
   const handleContinueClick = async () => {
     const updatedScore = factorScore.map((item) =>
@@ -126,44 +148,44 @@ export default function Quiz() {
   };
 
   return (
-    <div style={{ maxWidth: "800px", margin: "auto", textAlign: "center" }}>
-      <h1>Quiz</h1>
-      <h3>Progress</h3>
-      <progress value={(currentIndex / questions.length ?? 1) * 100} max="100"></progress>
-      
-      {questions && questions.length > 0 ? (
+    <Container maxWidth="sm">
+      <Typography variant="h4" gutterBottom>
+        Financial Phenotype Test
+      </Typography>
+      <LinearProgress
+        variant="determinate"
+        value={(currentIndex / (questions.length || 1)) * 100}
+      />
+      {questions.length > 0 ? (
         <>
-          <p>{questions[currentIndex].questionText}</p>
-          
-          <div
-            style={{ display: "flex", justifyContent: "center", gap: "10px", marginBottom: "20px" }}
-          >
-            
+          <Typography variant="h6" gutterBottom>
+            {questions[currentIndex].questionText}
+          </Typography>
+          <Grid container spacing={2} justifyContent="center" sx={{ my: 2 }}>
             {questions[currentIndex].options.map((option, index) => (
-              <button
-                key={index}
-                style={{
-                  padding: "10px 20px",
-                  fontSize: "16px",
-                  borderRadius: "5px",
-                  backgroundColor: selectedOption === index ? "#4CAF50" : "#f0f0f0",
-                  color: selectedOption === index ? "white" : "black",
-                  border: "none",
-                  cursor: "pointer",
-                }}
-                onClick={() => handleOptionClick(index)}
-              >
-                {(option.optionText.replace(/'/g, "'"))}
-
-              </button>
+              <Grid item xs={6} key={index}>
+                <Button
+                  fullWidth
+                  variant={selectedOption === index ? "contained" : "outlined"}
+                  onClick={() => handleOptionClick(index)}
+                  sx={{ textTransform: "none", height: "150px" }}
+                >
+                  {option.optionText}
+                </Button>
+              </Grid>
             ))}
-            
-          </div>
-          {selectedOption + 1 && <button onClick={handleContinueClick}>Continue</button>}
+          </Grid>
+          <Button
+            variant="contained"
+            onClick={handleContinueClick}
+            disabled={selectedOption === null}
+          >
+            {currentIndex === questions.length - 1 ? "Finish" : "Continue"}
+          </Button>
         </>
       ) : (
-        <p>Loading...</p>
+        <Typography>Loading...</Typography>
       )}
-    </div>
+    </Container>
   );
 }

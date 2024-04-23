@@ -6,6 +6,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import CloseIcon from "@mui/icons-material/Close";
 import { DeepChat } from "deep-chat-react";
 import { useLocation } from "react-router-dom";
+import { openAIKey } from "../openAI";
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,12 +36,17 @@ const Chatbot = () => {
           <>
             <div>
               <DeepChat
-                demo={true}
+                directConnection={{
+                  openAI: {
+                    key: openAIKey,
+                    chat: { model: "gpt-3.5-turbo" },
+                  },
+                }}
                 style={{ borderRadius: "10px" }}
-                textInput={{ placeholder: { text: "Welcome to the demo!" } }}
                 initialMessages={initialMessages}
               />
             </div>
+
             <div>
               <Fab
                 variant="contained"
