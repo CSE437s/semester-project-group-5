@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "../components/SessionProvider";
 import { supabase } from "../supabase";
 import { Navigate } from "react-router-dom";
-import ipf from "../assets/ipf_character.png";
+import IPF from "../assets/ipf_character.png";
 
 export default function Phenotype() {
   const [resultsAvailable, setResultsAvailable] = useState(false);
@@ -117,7 +117,7 @@ export default function Phenotype() {
             <br></br>
             <img
               alt="your_phenotype_character_image"
-              src={ipf}
+              src={IPF}
               width={230}
               height={320}
               className="center"
