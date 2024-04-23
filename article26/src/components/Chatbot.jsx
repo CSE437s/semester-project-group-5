@@ -12,7 +12,7 @@ const openAIKey = import.meta.env.VITE_OPENAI_API_KEY;
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [resultsData, setResultsData] = useState();
+  const [resultsData, setResultsData] = useState("NO RESULTS AVAILABLE");
   const toggleChat = () => setIsOpen(!isOpen);
   const location = useLocation();
   const isLoginPage = location.pathname === "/login" || location.pathname === "/home/quiz";
@@ -48,8 +48,9 @@ const Chatbot = () => {
   }, []); // Empty dependency array to ensure it runs only once after the component mounts
 
   const systemContextPrompt =
-    "Take on the role of Beri, my personal digital financial advisor. Advise me based on my financial phenotype, obtained from the results of my phenotype test. Here are my test results and phenotype for your reference. " +
-    resultsData;
+    "Take on the role of Beri, the user's personal digital financial advisor. Advise the user based on my financial phenotype, obtained from the results of their phenotype test. Here are their test results and phenotype for your reference: " +
+    resultsData +
+    "If no results are available, instruct the user to take the Article26 Financial Phenotype Test.";
 
   return (
     !isLoginPage && (
@@ -66,11 +67,10 @@ const Chatbot = () => {
           <>
             <div>
               <DeepChat
-                systemPrompt={systemContextPrompt}
                 directConnection={{
                   openAI: {
                     key: openAIKey,
-                    chat: { model: "gpt-3.5-turbo" },
+                    chat: { model: "gpt-3.5-turbo", system_prompt: systemContextPrompt },
                   },
                 }}
                 style={{ borderRadius: "10px" }}
