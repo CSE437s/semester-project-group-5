@@ -79,6 +79,9 @@ export function LayoutNav() {
                   Rent vs Buy
                 </MenuItem>
                 {/* Add more links as needed */}
+                <MenuItem onClick={onCloseCalcMenu} component={Link} to="/home/investment">
+                  Investment Calculator
+                </MenuItem>
               </Menu>
               {/* End of Calculators Dropdown */}{" "}
             </Stack>

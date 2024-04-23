@@ -12,6 +12,7 @@ import SavingsCalculatorPage from "./pages/SavingsCalculatorPage";
 import RentVsBuyCalculatorPage from "./pages/RentVsBuyCalculatorPage";
 import InvestmentCalculatorPage from "./pages/InvestmentCalculatorPage"; 
 
+
 import { supabase } from "./supabase";
 import { createClient } from "@supabase/supabase-js";
 
